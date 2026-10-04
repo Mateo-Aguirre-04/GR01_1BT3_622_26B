@@ -15,13 +15,15 @@ import java.util.List;
 public class ConsultaPerrosServlet extends HttpServlet {
     private static final String CATALOGO = "/WEB-INF/vistas/consultaPerros.jsp";
     private static final String FICHA = "/WEB-INF/vistas/fichaPerro.jsp";
+    private final InterfazConsultaRegistro interfaz =
+            new InterfazConsultaRegistro(Main.getControlConsulta());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idPerroParametro = request.getParameter("idPerro");
         if (idPerroParametro == null) {
-            List<Perro> perrosDisponibles = Main.getControlConsulta().consultarRegistro();
+            List<Perro> perrosDisponibles = interfaz.mostrarPerrosDisponibles();
             request.setAttribute("perrosDisponibles", perrosDisponibles);
             request.getRequestDispatcher(CATALOGO).forward(request, response);
             return;
@@ -34,13 +36,13 @@ public class ConsultaPerrosServlet extends HttpServlet {
                 return;
             }
 
-            Perro perro = Main.getControlConsulta().consultarFicha(idPerro);
+            Perro perro = interfaz.solicitarFicha(idPerro);
             if (perro == null) {
                 mostrarErrorFicha(request, response, "No se encontró un perro con ese ID.");
                 return;
             }
 
-            request.setAttribute("perro", perro);
+            request.setAttribute("perro", interfaz.mostrarFicha(perro));
         } catch (NumberFormatException exception) {
             mostrarErrorFicha(request, response, "El ID debe ser un número entero mayor que 0.");
             return;

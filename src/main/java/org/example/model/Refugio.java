@@ -35,6 +35,10 @@ public class Refugio {
         return idRefugio;
     }
 
+    public Long obtenerId() {
+        return idRefugio;
+    }
+
     public void setIdRefugio(Long idRefugio) {
         this.idRefugio = idRefugio;
     }

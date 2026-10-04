@@ -15,13 +15,13 @@ import java.time.format.DateTimeParseException;
 
 @WebServlet("/registro")
 public class RegistroPerroServlet extends HttpServlet {
-    private static final String FORMULARIO = "/WEB-INF/vistas/registroPerro.jsp";
-    private static final String CONFIRMACION = "/WEB-INF/vistas/confirmacionRegistro.jsp";
+    private final InterfazGestionPerros interfaz =
+            new InterfazGestionPerros(Main.getControlRegistro());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(FORMULARIO).forward(request, response);
+        request.getRequestDispatcher(interfaz.mostrarFormularioRegistro()).forward(request, response);
     }
 
     @Override
@@ -39,12 +39,12 @@ public class RegistroPerroServlet extends HttpServlet {
                     disponibilidad(parametro(request, "disponible")),
                     LocalDate.parse(parametro(request, "fechaIngreso")),
                     Long.valueOf(parametro(request, "idRefugio")));
-            Perro perro = Main.getControlRegistro().registrarPerro(datos);
+            Perro perro = interfaz.enviarDatosPerros(datos);
             request.setAttribute("perroRegistrado", perro);
-            request.getRequestDispatcher(CONFIRMACION).forward(request, response);
+            request.getRequestDispatcher(interfaz.mostrarConfirmacion()).forward(request, response);
         } catch (DateTimeParseException | IllegalArgumentException exception) {
             request.setAttribute("errorRegistro", exception.getMessage());
-            request.getRequestDispatcher(FORMULARIO).forward(request, response);
+            request.getRequestDispatcher(interfaz.mostrarFormularioRegistro()).forward(request, response);
         }
     }
 

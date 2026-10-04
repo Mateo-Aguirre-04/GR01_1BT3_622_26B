@@ -22,6 +22,10 @@ public class ControlRegistro {
         Objects.requireNonNull(datos, "Los datos del registro son obligatorios");
         validar(datos);
         asociarRefugio(datos.idRefugio());
+        Long idRefugio = refugioActual.obtenerId();
+        if (!idRefugio.equals(datos.idRefugio())) {
+            throw new IllegalArgumentException("El refugio seleccionado no coincide con el refugio actual");
+        }
 
         Perro perro = new Perro(
                 datos.idPerro(),
