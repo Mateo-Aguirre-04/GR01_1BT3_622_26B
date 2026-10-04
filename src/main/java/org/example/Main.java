@@ -1,17 +1,49 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import org.example.control.ControlConsulta;
+import org.example.control.ControlRegistro;
+import org.example.model.Encargado;
+import org.example.model.Refugio;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+public class Main {
+    private static Refugio refugio;
+    private static Encargado encargado;
+    private static ControlRegistro controlRegistro;
+    private static ControlConsulta controlConsulta;
+
+    private Main() {
+    }
+
+    public static synchronized void initialize() {
+        if (refugio == null) {
+            refugio = new Refugio(1L, "Refugio Central", "Ubicación por definir");
+            encargado = new Encargado(1L, "Encargado del refugio");
+            controlRegistro = new ControlRegistro(encargado, refugio);
+            controlConsulta = new ControlConsulta(refugio);
         }
+    }
+
+    public static Refugio getRefugio() {
+        initialize();
+        return refugio;
+    }
+
+    public static Encargado getEncargado() {
+        initialize();
+        return encargado;
+    }
+
+    public static ControlRegistro getControlRegistro() {
+        initialize();
+        return controlRegistro;
+    }
+
+    public static ControlConsulta getControlConsulta() {
+        initialize();
+        return controlConsulta;
+    }
+
+    public static void main(String[] args) {
+        initialize();
     }
 }
