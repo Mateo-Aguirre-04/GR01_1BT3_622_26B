@@ -21,6 +21,8 @@ public class Refugio {
 
     @OneToMany(mappedBy = "refugio", cascade = CascadeType.ALL)
     private List<Perro> perros = new ArrayList<>();
+    private final List<SolicitudAdopcion> solicitudes = new ArrayList<>();
+    private long siguienteIdSolicitud = 1L;
 
     protected Refugio() {
     }
@@ -88,5 +90,52 @@ public class Refugio {
                 .filter(perro -> Objects.equals(perro.getIdPerro(), idPerro))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public synchronized Long obtenerIdSolicitud() {
+        return siguienteIdSolicitud++;
+    }
+
+    public synchronized void agregarSolicitud(SolicitudAdopcion solicitud) {
+        Objects.requireNonNull(solicitud, "La solicitud es obligatoria");
+        if (solicitudes.stream().anyMatch(registrada ->
+                Objects.equals(registrada.getIdSolicitud(), solicitud.getIdSolicitud()))) {
+            throw new IllegalArgumentException("Ya existe una solicitud con ese ID");
+        }
+        if (obtenerFichaPerro(solicitud.obtenerIdPerro()) == null) {
+            throw new IllegalArgumentException("El perro asociado a la solicitud no existe en el refugio");
+        }
+        solicitudes.add(solicitud);
+        siguienteIdSolicitud = Math.max(siguienteIdSolicitud, solicitud.getIdSolicitud() + 1);
+    }
+
+    public synchronized SolicitudAdopcion obtenerSolicitud(Long idSolicitud) {
+        if (idSolicitud == null) {
+            return null;
+        }
+        return solicitudes.stream()
+                .filter(solicitud -> Objects.equals(solicitud.getIdSolicitud(), idSolicitud))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public synchronized List<SolicitudAdopcion> listarSolicitudes() {
+        return List.copyOf(solicitudes);
+    }
+
+    public synchronized boolean verificarDisponibilidad(Long idPerro) {
+        Perro perro = obtenerFichaPerro(idPerro);
+        if (perro == null) {
+            throw new IllegalArgumentException("No se encontró un perro con ese ID");
+        }
+        return perro.estaDisponible();
+    }
+
+    public synchronized void marcarNoDisponible(Long idPerro) {
+        Perro perro = obtenerFichaPerro(idPerro);
+        if (perro == null) {
+            throw new IllegalArgumentException("No se encontró un perro con ese ID");
+        }
+        perro.marcarNoDisponible();
     }
 }

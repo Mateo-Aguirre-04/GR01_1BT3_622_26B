@@ -175,6 +175,18 @@
             background: #f0f0ff;
         }
 
+        .button-adoption,
+        .button-adoption:visited {
+            border-color: #247a56;
+            background: #247a56;
+            color: #fff;
+        }
+
+        .button-adoption:hover {
+            border-color: #1b6042;
+            background: #1b6042;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 14px;
@@ -269,6 +281,9 @@
         </c:choose>
 
         <nav class="actions" aria-label="Navegación de la ficha">
+            <c:if test="${not empty perro and perro.disponible}">
+                <a class="button button-adoption" href="${pageContext.request.contextPath}/adopcion?idPerro=${perro.idPerro}">Solicitar adopción</a>
+            </c:if>
             <a class="button" href="${pageContext.request.contextPath}/consulta">← Volver al catálogo</a>
             <a class="button button-secondary" href="${pageContext.request.contextPath}/inicio.jsp">← Volver al menú principal</a>
         </nav>

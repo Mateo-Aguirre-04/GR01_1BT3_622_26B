@@ -1,6 +1,8 @@
 package org.example;
 
 import org.example.control.ControlConsulta;
+import org.example.control.ControlEnvioSolicitud;
+import org.example.control.ControlFormulario;
 import org.example.control.ControlRegistro;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
@@ -10,6 +12,8 @@ public class Main {
     private static Encargado encargado;
     private static ControlRegistro controlRegistro;
     private static ControlConsulta controlConsulta;
+    private static ControlFormulario controlFormulario;
+    private static ControlEnvioSolicitud controlEnvioSolicitud;
 
     private Main() {
     }
@@ -20,6 +24,8 @@ public class Main {
             encargado = new Encargado(1L, "Encargado del refugio");
             controlRegistro = new ControlRegistro(encargado, refugio);
             controlConsulta = new ControlConsulta(refugio);
+            controlFormulario = new ControlFormulario(controlConsulta);
+            controlEnvioSolicitud = new ControlEnvioSolicitud(refugio);
         }
     }
 
@@ -41,6 +47,16 @@ public class Main {
     public static ControlConsulta getControlConsulta() {
         initialize();
         return controlConsulta;
+    }
+
+    public static ControlFormulario getControlFormulario() {
+        initialize();
+        return controlFormulario;
+    }
+
+    public static ControlEnvioSolicitud getControlEnvioSolicitud() {
+        initialize();
+        return controlEnvioSolicitud;
     }
 
     public static void main(String[] args) {

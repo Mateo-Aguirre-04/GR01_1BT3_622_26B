@@ -124,4 +124,8 @@ public class Perro {
     public boolean estaDisponible() {
         return disponible;
     }
+
+    public void marcarNoDisponible() {
+        disponible = false;
+    }
 }
