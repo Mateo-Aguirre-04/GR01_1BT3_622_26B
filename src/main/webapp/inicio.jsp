@@ -219,6 +219,12 @@
                 <p>Consulta los perros disponibles y revisa la ficha de cada uno.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/consulta">Consultar perros</a>
             </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">📋</div>
+                <h3>Gestionar solicitudes</h3>
+                <p>Revisa la información enviada por los adoptantes y gestiona las solicitudes.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/solicitudes">Gestionar solicitudes</a>
+            </article>
         </section>
     </section>
 </main>
