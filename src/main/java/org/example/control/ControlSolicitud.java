@@ -55,6 +55,12 @@ public class ControlSolicitud {
         return comunicarDecision(idSolicitud);
     }
 
+    public synchronized String rechazarSolicitud(Long idSolicitud) {
+        SolicitudAdopcion solicitud = obtenerSolicitud(idSolicitud);
+        solicitud.rechazar();
+        return "Solicitud rechazada";
+    }
+
     public String comunicarDecision(Long idSolicitud) {
         SolicitudAdopcion solicitud = obtenerSolicitud(idSolicitud);
         if ("Aprobada".equals(solicitud.getEstado())) {

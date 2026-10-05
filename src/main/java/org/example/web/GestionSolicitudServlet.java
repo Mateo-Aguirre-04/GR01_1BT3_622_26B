@@ -54,13 +54,10 @@ public class GestionSolicitudServlet extends HttpServlet {
         String idParametro = request.getParameter("idSolicitud");
         try {
             Long idSolicitud = parsearId(idParametro);
-            String decision = request.getParameter("aprobada");
-            if (!"true".equalsIgnoreCase(decision)) {
-                throw new UnsupportedOperationException("El rechazo manual está pendiente de confirmación");
-            }
-            request.setAttribute("resultadoDecision", interfaz.enviarDecision(idSolicitud, true));
+            boolean aprobada = parsearDecision(request.getParameter("aprobada"));
+            request.setAttribute("resultadoDecision", interfaz.enviarDecision(idSolicitud, aprobada));
             request.getRequestDispatcher(interfaz.mostrarResultado()).forward(request, response);
-        } catch (IllegalArgumentException | IllegalStateException | UnsupportedOperationException exception) {
+        } catch (IllegalArgumentException | IllegalStateException exception) {
             request.setAttribute("errorGestion", exception.getMessage());
             cargarListado(request);
             request.getRequestDispatcher(LISTADO).forward(request, response);
@@ -84,5 +81,15 @@ public class GestionSolicitudServlet extends HttpServlet {
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException("El ID de la solicitud no es válido", exception);
         }
+    }
+
+    private boolean parsearDecision(String valor) {
+        if ("true".equalsIgnoreCase(valor)) {
+            return true;
+        }
+        if ("false".equalsIgnoreCase(valor)) {
+            return false;
+        }
+        throw new IllegalArgumentException("La decisión de la solicitud no es válida");
     }
 }

@@ -92,12 +92,14 @@ class ControlSolicitudTest {
     }
 
     @Test
-    void rechazoManualPermanecePendienteDeConfirmacion() {
-        assertThrows(UnsupportedOperationException.class,
-                () -> interfaz.enviarDecision(solicitud.getIdSolicitud(), false));
+    void rechazarSolicitudCambiaEstadoSinAfectarDisponibilidadDelPerro() {
+        String resultado = interfaz.enviarDecision(solicitud.getIdSolicitud(), false);
 
-        assertEquals("Pendiente", solicitud.getEstado());
+        assertEquals("Solicitud rechazada", resultado);
+        assertEquals("Rechazada", solicitud.getEstado());
         assertTrue(refugio.verificarDisponibilidad(501L));
+        assertThrows(IllegalStateException.class,
+                () -> interfaz.enviarDecision(solicitud.getIdSolicitud(), false));
     }
 
     private Map<String, String> datosFormulario() {

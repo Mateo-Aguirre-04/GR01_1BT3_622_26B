@@ -66,12 +66,14 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .button-danger { border-color: #b42318; background: #b42318; }
         .button-secondary { background: #fff; color: #41649a; }
+        .decision-form { margin: 0; }
         @media (max-width: 600px) {
             body { padding: 14px; }
             .content { padding: 26px 18px; }
             .row { grid-template-columns: 1fr; gap: 4px; }
-            .actions, .button { width: 100%; }
+            .actions, .button, .decision-form { width: 100%; }
         }
     </style>
 </head>
@@ -108,10 +110,15 @@
         </section>
         <div class="actions">
             <c:if test="${solicitud.estado == 'Pendiente'}">
-                <form action="${pageContext.request.contextPath}/solicitudes" method="post">
+                <form class="decision-form" action="${pageContext.request.contextPath}/solicitudes" method="post">
                     <input type="hidden" name="idSolicitud" value="<c:out value='${solicitud.idSolicitud}'/>">
                     <input type="hidden" name="aprobada" value="true">
                     <button class="button" type="submit">Aprobar si el perro sigue disponible</button>
+                </form>
+                <form class="decision-form" action="${pageContext.request.contextPath}/solicitudes" method="post">
+                    <input type="hidden" name="idSolicitud" value="<c:out value='${solicitud.idSolicitud}'/>">
+                    <input type="hidden" name="aprobada" value="false">
+                    <button class="button button-danger" type="submit">Rechazar solicitud</button>
                 </form>
             </c:if>
             <a class="button button-secondary" href="${pageContext.request.contextPath}/solicitudes">Volver a solicitudes</a>

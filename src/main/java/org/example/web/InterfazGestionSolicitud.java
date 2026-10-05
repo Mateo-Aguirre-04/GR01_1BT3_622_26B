@@ -48,10 +48,9 @@ public class InterfazGestionSolicitud {
     }
 
     public String enviarDecision(Long idSolicitud, boolean aprobada) {
-        if (!aprobada) {
-            throw new UnsupportedOperationException("El rechazo manual está pendiente de confirmación");
-        }
-        return controlSolicitud.aprobarSolicitud(idSolicitud);
+        return aprobada
+                ? controlSolicitud.aprobarSolicitud(idSolicitud)
+                : controlSolicitud.rechazarSolicitud(idSolicitud);
     }
 
     public String mostrarResultado() {
