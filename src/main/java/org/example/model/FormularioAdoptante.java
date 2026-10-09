@@ -19,6 +19,7 @@ public class FormularioAdoptante {
     private final String telefono;
     private final String correo;
 
+    /*EXTRACT CLASS*/
     public FormularioAdoptante(Map<String, String> datos) {
         Objects.requireNonNull(datos, "Los datos del formulario son obligatorios");
         infoDomicilio = valor(datos, "infoDomicilio");
@@ -32,6 +33,7 @@ public class FormularioAdoptante {
         correo = valor(datos, "correo");
     }
 
+    /*SUBSTITUTE ALGORITHM*/
     public boolean verificar(Map<String, String> datos) {
         Objects.requireNonNull(datos, "Los datos del formulario son obligatorios");
         return noVacio(infoDomicilio)

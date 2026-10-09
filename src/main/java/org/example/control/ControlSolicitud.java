@@ -49,8 +49,6 @@ public class ControlSolicitud {
         if (refugio.verificarDisponibilidad(idPerro)) {
             solicitud.aprobar();
             refugio.marcarNoDisponible(idPerro);
-        } else {
-            solicitud.rechazar();
         }
         return comunicarDecision(idSolicitud);
     }
