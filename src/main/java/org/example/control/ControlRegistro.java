@@ -20,6 +20,7 @@ public class ControlRegistro {
     }
 
     public synchronized Perro registrarPerro(HttpServletRequest solicitud) {
+        /*REPLACE TEMP WITH QUERY*/
         Objects.requireNonNull(solicitud, "La solicitud de registro es obligatoria");
         Long idPerro = Long.valueOf(parametro(solicitud, "idPerro"));
         String nombre = parametro(solicitud, "nombre");
@@ -32,6 +33,7 @@ public class ControlRegistro {
         Long idRefugioSolicitado = Long.valueOf(parametro(solicitud, "idRefugio"));
 
         validar(idPerro, nombre, edad, caracteristicas, estadoSalud, espacioAsignado, fechaIngreso);
+        /*EXTRACT METHOD: Comprobar refugio*/
         asociarRefugio(idRefugioSolicitado);
         Long idRefugio = refugioActual.obtenerId();
         if (!idRefugio.equals(idRefugioSolicitado)) {
