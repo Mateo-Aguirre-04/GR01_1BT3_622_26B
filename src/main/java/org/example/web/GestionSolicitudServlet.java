@@ -53,9 +53,8 @@ public class GestionSolicitudServlet extends HttpServlet {
             throws ServletException, IOException {
         String idParametro = request.getParameter("idSolicitud");
         try {
-            Long idSolicitud = parsearId(idParametro);
-            boolean aprobada = parsearDecision(request.getParameter("aprobada"));
-            request.setAttribute("resultadoDecision", interfaz.enviarDecision(idSolicitud, aprobada));
+            request.setAttribute("resultadoDecision", interfaz.enviarDecision(parsearId(idParametro),
+                    parsearDecision(request.getParameter("aprobada"))));
             request.getRequestDispatcher(interfaz.mostrarResultado()).forward(request, response);
         } catch (IllegalArgumentException | IllegalStateException exception) {
             request.setAttribute("errorGestion", exception.getMessage());
