@@ -1,6 +1,5 @@
 package org.example.control;
 
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
 import org.example.model.SolicitudAdopcion;
@@ -106,8 +105,8 @@ class ControlEnvioSolicitudTest {
                 interfaz.mostrarConfirmacion(solicitud.getIdSolicitud()));
     }
 
-    private DatosRegistroPerro datosPerro(Long idPerro, boolean disponible) {
-        return new DatosRegistroPerro(idPerro, "Luna", 3, "Cruza", "Sana", "1",
+    private jakarta.servlet.http.HttpServletRequest datosPerro(Long idPerro, boolean disponible) {
+        return SolicitudRegistroTestFactory.crear(idPerro, "Luna", 3, "Cruza", "Sana", "1",
                 disponible, LocalDate.of(2026, 1, 15), 1L);
     }
 

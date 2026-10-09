@@ -1,6 +1,5 @@
 package org.example.control;
 
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Encargado;
 import org.example.model.Perro;
 import org.example.model.Refugio;
@@ -66,8 +65,8 @@ class ControlConsultaTest {
         assertNull(interfaz.solicitarFicha(999L));
     }
 
-    private DatosRegistroPerro datos(Long idPerro, boolean disponible) {
-        return new DatosRegistroPerro(
+    private jakarta.servlet.http.HttpServletRequest datos(Long idPerro, boolean disponible) {
+        return SolicitudRegistroTestFactory.crear(
                 idPerro,
                 "Luna",
                 3,

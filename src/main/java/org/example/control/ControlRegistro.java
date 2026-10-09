@@ -1,10 +1,11 @@
 package org.example.control;
 
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Encargado;
 import org.example.model.Perro;
 import org.example.model.Refugio;
 
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ControlRegistro {
@@ -18,24 +19,34 @@ public class ControlRegistro {
         this.refugioActual = refugioConfigurado;
     }
 
-    public synchronized Perro registrarPerro(DatosRegistroPerro datos) {
-        Objects.requireNonNull(datos, "Los datos del registro son obligatorios");
-        validar(datos);
-        asociarRefugio(datos.idRefugio());
+    public synchronized Perro registrarPerro(HttpServletRequest solicitud) {
+        Objects.requireNonNull(solicitud, "La solicitud de registro es obligatoria");
+        Long idPerro = Long.valueOf(parametro(solicitud, "idPerro"));
+        String nombre = parametro(solicitud, "nombre");
+        int edad = Integer.parseInt(parametro(solicitud, "edad"));
+        String caracteristicas = parametro(solicitud, "caracteristicas");
+        String estadoSalud = parametro(solicitud, "estadoSalud");
+        String espacioAsignado = parametro(solicitud, "espacioAsignado");
+        boolean disponible = disponibilidad(parametro(solicitud, "disponible"));
+        LocalDate fechaIngreso = LocalDate.parse(parametro(solicitud, "fechaIngreso"));
+        Long idRefugioSolicitado = Long.valueOf(parametro(solicitud, "idRefugio"));
+
+        validar(idPerro, nombre, edad, caracteristicas, estadoSalud, espacioAsignado, fechaIngreso);
+        asociarRefugio(idRefugioSolicitado);
         Long idRefugio = refugioActual.obtenerId();
-        if (!idRefugio.equals(datos.idRefugio())) {
+        if (!idRefugio.equals(idRefugioSolicitado)) {
             throw new IllegalArgumentException("El refugio seleccionado no coincide con el refugio actual");
         }
 
         Perro perro = new Perro(
-                datos.idPerro(),
-                datos.nombre().trim(),
-                datos.edad(),
-                datos.caracteristicas().trim(),
-                datos.estadoSalud().trim(),
-                datos.espacioAsignado().trim(),
-                datos.disponible(),
-                datos.fechaIngreso(),
+                idPerro,
+                nombre.trim(),
+                edad,
+                caracteristicas.trim(),
+                estadoSalud.trim(),
+                espacioAsignado.trim(),
+                disponible,
+                fechaIngreso,
                 refugioActual);
 
         refugioActual.agregarPerro(perro);
@@ -58,26 +69,45 @@ public class ControlRegistro {
         return refugioActual;
     }
 
-    private void validar(DatosRegistroPerro datos) {
-        if (datos.idPerro() == null || datos.idPerro() <= 0) {
+    private String parametro(HttpServletRequest solicitud, String nombre) {
+        String valor = solicitud.getParameter(nombre);
+        if (valor == null || valor.isBlank()) {
+            throw new IllegalArgumentException("El campo " + nombre + " es obligatorio");
+        }
+        return valor.trim();
+    }
+
+    private boolean disponibilidad(String valor) {
+        if ("true".equals(valor)) {
+            return true;
+        }
+        if ("false".equals(valor)) {
+            return false;
+        }
+        throw new IllegalArgumentException("La disponibilidad seleccionada no es válida");
+    }
+
+    private void validar(Long idPerro, String nombre, int edad, String caracteristicas,
+                         String estadoSalud, String espacioAsignado, LocalDate fechaIngreso) {
+        if (idPerro <= 0) {
             throw new IllegalArgumentException("El ID del perro debe ser mayor que cero");
         }
-        if (datos.nombre() == null || datos.nombre().isBlank()) {
+        if (nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre del perro es obligatorio");
         }
-        if (datos.edad() < 0) {
+        if (edad < 0) {
             throw new IllegalArgumentException("La edad no puede ser negativa");
         }
-        if (datos.caracteristicas() == null || datos.caracteristicas().isBlank()) {
+        if (caracteristicas.isBlank()) {
             throw new IllegalArgumentException("Las características son obligatorias");
         }
-        if (datos.estadoSalud() == null || datos.estadoSalud().isBlank()) {
+        if (estadoSalud.isBlank()) {
             throw new IllegalArgumentException("El estado de salud es obligatorio");
         }
-        if (datos.espacioAsignado() == null || datos.espacioAsignado().isBlank()) {
+        if (espacioAsignado.isBlank()) {
             throw new IllegalArgumentException("El espacio asignado es obligatorio");
         }
-        if (datos.fechaIngreso() == null) {
+        if (fechaIngreso == null) {
             throw new IllegalArgumentException("La fecha de ingreso es obligatoria");
         }
     }

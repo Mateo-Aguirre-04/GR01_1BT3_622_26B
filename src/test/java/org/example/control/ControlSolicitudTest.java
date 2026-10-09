@@ -1,6 +1,5 @@
 package org.example.control;
 
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
 import org.example.model.SolicitudAdopcion;
@@ -29,7 +28,7 @@ class ControlSolicitudTest {
         refugio = new Refugio(1L, "Refugio Central", "Quito");
         ControlRegistro controlRegistro = new ControlRegistro(
                 new Encargado(10L, "Encargado"), refugio);
-        controlRegistro.registrarPerro(new DatosRegistroPerro(
+        controlRegistro.registrarPerro(SolicitudRegistroTestFactory.crear(
                 501L, "Luna", 3, "Cruza", "Sana", "1", true,
                 LocalDate.of(2026, 1, 15), 1L));
         control = new ControlSolicitud(refugio);

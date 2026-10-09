@@ -1,6 +1,5 @@
 package org.example.control;
 
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Encargado;
 import org.example.model.Perro;
 import org.example.model.Refugio;
@@ -8,6 +7,7 @@ import org.example.web.InterfazGestionPerros;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,6 +36,9 @@ class ControlRegistroTest {
 
         assertSame(registrado, refugio.obtenerFichaPerro(100L));
         assertSame(registrado, encargado.getUltimoRegistro());
+        assertEquals("Luna", registrado.getNombre());
+        assertEquals(3, registrado.getEdad());
+        assertEquals(LocalDate.of(2026, 1, 15), registrado.getFechaIngreso());
         assertEquals(1L, refugio.obtenerId());
         assertEquals(1, refugio.listarPerrosDisponibles().size());
         assertEquals("/WEB-INF/vistas/registroPerro.jsp", interfaz.mostrarFormularioRegistro());
@@ -51,7 +54,7 @@ class ControlRegistroTest {
 
     @Test
     void registrarPerroRechazaDatosInvalidosSinModificarElRefugio() {
-        DatosRegistroPerro datos = new DatosRegistroPerro(
+        HttpServletRequest datos = SolicitudRegistroTestFactory.crear(
                 102L, " ", 2, "Cruza", "Sano", "1", true, LocalDate.now(), 1L);
 
         assertThrows(IllegalArgumentException.class, () -> controlRegistro.registrarPerro(datos));
@@ -78,8 +81,8 @@ class ControlRegistroTest {
         assertTrue(refugio.getPerros().isEmpty());
     }
 
-    private DatosRegistroPerro datosValidos(Long idPerro, Long idRefugio, boolean disponible) {
-        return new DatosRegistroPerro(
+    private HttpServletRequest datosValidos(Long idPerro, Long idRefugio, boolean disponible) {
+        return SolicitudRegistroTestFactory.crear(
                 idPerro,
                 "Luna",
                 3,
