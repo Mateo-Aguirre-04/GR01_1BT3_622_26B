@@ -1,9 +1,9 @@
 package org.example.web;
 
 import org.example.control.ControlRegistro;
-import org.example.model.DatosRegistroPerro;
 import org.example.model.Perro;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
@@ -23,8 +23,8 @@ public class InterfazGestionPerros {
         return FORMULARIO;
     }
 
-    public Perro enviarDatosPerros(DatosRegistroPerro datos) {
-        return controlRegistro.registrarPerro(datos);
+    public Perro enviarDatosPerros(HttpServletRequest solicitud) {
+        return controlRegistro.registrarPerro(solicitud);
     }
 
     public String mostrarConfirmacion() {
