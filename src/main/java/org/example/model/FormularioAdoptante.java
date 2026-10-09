@@ -33,18 +33,27 @@ public class FormularioAdoptante {
         correo = valor(datos, "correo");
     }
 
-    /*SUBSTITUTE ALGORITHM*/
     public boolean verificar(Map<String, String> datos) {
         Objects.requireNonNull(datos, "Los datos del formulario son obligatorios");
-        return noVacio(infoDomicilio)
-                && noVacio(experienciaMascotas)
-                && noVacio(condicionesHogar)
-                && noVacio(disponibilidadTiempo)
-                && aceptacionTerminos
-                && noVacio(nombres)
-                && noVacio(apellidos)
-                && noVacio(telefono)
-                && noVacio(correo)
+
+        String[] campos = {
+                infoDomicilio,
+                experienciaMascotas,
+                condicionesHogar,
+                disponibilidadTiempo,
+                nombres,
+                apellidos,
+                telefono,
+                correo
+        };
+
+        for (String campo : campos) {
+            if (!noVacio(campo)) {
+                return false;
+            }
+        }
+
+        return aceptacionTerminos
                 && "true".equalsIgnoreCase(datos.get("aceptacionTerminos"));
     }
 
