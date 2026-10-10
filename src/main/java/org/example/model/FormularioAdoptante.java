@@ -14,10 +14,7 @@ public class FormularioAdoptante {
     private final String condicionesHogar;
     private final String disponibilidadTiempo;
     private final boolean aceptacionTerminos;
-    private final String nombres;
-    private final String apellidos;
-    private final String telefono;
-    private final String correo;
+    private final Adoptante adoptante;
 
     /*EXTRACT CLASS*/
     public FormularioAdoptante(Map<String, String> datos) {
@@ -27,10 +24,12 @@ public class FormularioAdoptante {
         condicionesHogar = valor(datos, "condicionesHogar");
         disponibilidadTiempo = valor(datos, "disponibilidadTiempo");
         aceptacionTerminos = Boolean.parseBoolean(valor(datos, "aceptacionTerminos"));
-        nombres = valor(datos, "nombres");
-        apellidos = valor(datos, "apellidos");
-        telefono = valor(datos, "telefono");
-        correo = valor(datos, "correo");
+        adoptante = new Adoptante(
+                valor(datos, "nombres"),
+                valor(datos, "apellidos"),
+                valor(datos, "telefono"),
+                valor(datos, "correo")
+        );
     }
 
     public boolean verificar(Map<String, String> datos) {
@@ -40,11 +39,7 @@ public class FormularioAdoptante {
                 infoDomicilio,
                 experienciaMascotas,
                 condicionesHogar,
-                disponibilidadTiempo,
-                nombres,
-                apellidos,
-                telefono,
-                correo
+                disponibilidadTiempo
         };
 
         for (String campo : campos) {
@@ -53,7 +48,8 @@ public class FormularioAdoptante {
             }
         }
 
-        return aceptacionTerminos
+        return adoptante.datosCompletos()
+                && aceptacionTerminos
                 && "true".equalsIgnoreCase(datos.get("aceptacionTerminos"));
     }
 
@@ -64,10 +60,10 @@ public class FormularioAdoptante {
         datos.put("condicionesHogar", condicionesHogar);
         datos.put("disponibilidadTiempo", disponibilidadTiempo);
         datos.put("aceptacionTerminos", Boolean.toString(aceptacionTerminos));
-        datos.put("nombres", nombres);
-        datos.put("apellidos", apellidos);
-        datos.put("telefono", telefono);
-        datos.put("correo", correo);
+        datos.put("nombres", adoptante.getNombres());
+        datos.put("apellidos", adoptante.getApellidos());
+        datos.put("telefono", adoptante.getTelefono());
+        datos.put("correo", adoptante.getCorreo());
         return Collections.unmodifiableMap(datos);
     }
 
@@ -92,19 +88,19 @@ public class FormularioAdoptante {
     }
 
     public String getNombres() {
-        return nombres;
+        return adoptante.getNombres();
     }
 
     public String getApellidos() {
-        return apellidos;
+        return adoptante.getApellidos();
     }
 
     public String getTelefono() {
-        return telefono;
+        return adoptante.getTelefono();
     }
 
     public String getCorreo() {
-        return correo;
+        return adoptante.getCorreo();
     }
 
     private static String valor(Map<String, String> datos, String nombre) {
