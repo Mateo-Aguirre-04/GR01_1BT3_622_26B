@@ -20,7 +20,6 @@ public class ControlRegistro {
     }
 
     public synchronized Perro registrarPerro(HttpServletRequest solicitud) {
-        /*REPLACE TEMP WITH QUERY*/
         Objects.requireNonNull(solicitud, "La solicitud de registro es obligatoria");
         Long idPerro = Long.valueOf(parametro(solicitud, "idPerro"));
         String nombre = parametro(solicitud, "nombre");
@@ -33,27 +32,30 @@ public class ControlRegistro {
         Long idRefugioSolicitado = Long.valueOf(parametro(solicitud, "idRefugio"));
 
         validar(idPerro, nombre, edad, caracteristicas, estadoSalud, espacioAsignado, fechaIngreso);
-        /*EXTRACT METHOD: Comprobar refugio*/
+        confirmarRefugio(idRefugioSolicitado);
+
+        Perro perro = crearPerro(idPerro, nombre, edad, caracteristicas,
+                estadoSalud, espacioAsignado, disponible, fechaIngreso);
+
+        refugioActual.agregarPerro(perro);
+        encargadoActual.asociarRegistro(perro);
+        return perro;
+    }
+
+    private void confirmarRefugio(Long idRefugioSolicitado) {
         asociarRefugio(idRefugioSolicitado);
         Long idRefugio = refugioActual.obtenerId();
         if (!idRefugio.equals(idRefugioSolicitado)) {
             throw new IllegalArgumentException("El refugio seleccionado no coincide con el refugio actual");
         }
+    }
 
-        Perro perro = new Perro(
-                idPerro,
-                nombre.trim(),
-                edad,
-                caracteristicas.trim(),
-                estadoSalud.trim(),
-                espacioAsignado.trim(),
-                disponible,
-                fechaIngreso,
-                refugioActual);
-
-        refugioActual.agregarPerro(perro);
-        encargadoActual.asociarRegistro(perro);
-        return perro;
+    private Perro crearPerro(Long idPerro, String nombre, int edad, String caracteristicas,
+                             String estadoSalud, String espacioAsignado,
+                             boolean disponible, LocalDate fechaIngreso) {
+        return new Perro(idPerro, nombre.trim(), edad, caracteristicas.trim(),
+                estadoSalud.trim(), espacioAsignado.trim(), disponible,
+                fechaIngreso, refugioActual);
     }
 
     public synchronized void asociarRefugio(Long idRefugio) {
