@@ -12,7 +12,14 @@ public class Visita {
     }
 
     public void aceptar() {
+        validarPendiente();
         estado = Estado.ACEPTADA;
+    }
+
+    private void validarPendiente(){
+        if(estado != Estado.PENDIENTE){
+            throw new IllegalStateException("La visita ya ha sido aceptada");
+        }
     }
 
     public enum Estado {

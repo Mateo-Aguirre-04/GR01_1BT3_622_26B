@@ -37,6 +37,20 @@ class ControlVisitaTest {
     }
 
     @Test
+
+    void aceptarVisitaYaAceptadaLanzaExcepcion(){
+        // Arrange
+        control.aceptarVisita(visita);
+
+        // Act + Assert
+        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(visita));
+
+        // Assert
+        assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
+
+    }
+
+    @Test
     void solicitarVisitaConPerroDisponibleYFechaFuturaCreaVisitaPendiente() {
         Perro perro = new Perro(1L,
                 "-",
