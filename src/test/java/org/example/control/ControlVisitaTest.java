@@ -29,4 +29,18 @@ class ControlVisitaTest {
     void aceptarVisitaNulaLanzaExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> control.aceptarVisita(null));
     }
+
+    @Test
+    void aceptarVisitaYaAceptadaLanzaExcepcion(){
+        // Arrange
+        control.aceptarVisita(visita);
+
+        // Act + Assert
+        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(visita));
+
+        // Assert
+        assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
+
+    }
+
 }
