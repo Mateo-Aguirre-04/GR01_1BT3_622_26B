@@ -9,10 +9,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+import org.example.model.ServicioDisponibilidad;
+
 import java.util.stream.Stream;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+@ExtendWith(MockitoExtension.class)
 
 class ControlVisitaTest {
     Visita visita = null;
@@ -20,7 +28,7 @@ class ControlVisitaTest {
     Refugio refugio = null;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         visita = new Visita(LocalDate.now().plusDays(1));
         control = new ControlVisita();
         refugio = new Refugio(1L, "-", "-");
@@ -41,8 +49,7 @@ class ControlVisitaTest {
     }
 
     @Test
-
-    void aceptarVisitaYaAceptadaLanzaExcepcion(){
+    void aceptarVisitaYaAceptadaLanzaExcepcion() {
         // Arrange
         control.aceptarVisita(visita);
 
@@ -72,7 +79,7 @@ class ControlVisitaTest {
 
     @Test
     void solicitarVisitaConservaLaFechaSolicitada() {
-        Perro perro = new Perro(1L,"-", 3, "-", "-", "-",
+        Perro perro = new Perro(1L, "-", 3, "-", "-", "-",
                 true, LocalDate.of(2026, 3, 10), refugio);
         LocalDate fecha = LocalDate.now().plusDays(3);
 
@@ -110,5 +117,19 @@ class ControlVisitaTest {
         control.rechazarVisita(visita);
 
         assertEquals(Visita.Estado.RECHAZADA, visita.getEstado());
+    }
+
+    @Test
+    void aceptarVisitaConHorarioOcupadoRechazaVisita() {
+        ServicioDisponibilidad servicioMock = mock(ServicioDisponibilidad.class);
+        when(servicioMock.estaLibre(visita.getFechaVisita())).thenReturn(false);
+
+        ControlVisita controlConServicio = new ControlVisita(servicioMock);
+
+        controlConServicio.aceptarVisita(visita);
+
+        assertEquals(Visita.Estado.RECHAZADA, visita.getEstado());
+
+        verify(servicioMock).estaLibre(visita.getFechaVisita());
     }
 }
