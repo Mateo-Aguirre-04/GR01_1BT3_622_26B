@@ -32,6 +32,7 @@ public class Visita {
     }
 
     public void rechazar(){
+        validarPendiente();
         estado = Estado.RECHAZADA;
     }
 
