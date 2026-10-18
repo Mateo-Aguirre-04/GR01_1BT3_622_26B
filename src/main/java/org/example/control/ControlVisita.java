@@ -8,17 +8,19 @@ import java.time.LocalDate;
 public class ControlVisita {
 
     public void aceptarVisita(Visita visita) {
-        if (visita == null) {
-            throw new IllegalArgumentException("La visita es obligatoria");
-        }
+        validarVisita(visita);
         visita.aceptar();
     }
 
     public void rechazarVisita(Visita visita) {
+        validarVisita(visita);
+        visita.rechazar();
+    }
+
+    private void validarVisita(Visita visita){
         if (visita == null) {
             throw new IllegalArgumentException("La visita es obligatoria");
         }
-        visita.rechazar();
     }
 
     public Visita solicitarVisita(Perro perro, LocalDate fechaVisita) {
