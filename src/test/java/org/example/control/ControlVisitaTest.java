@@ -41,7 +41,6 @@ class ControlVisitaTest {
     }
 
     @Test
-
     void aceptarVisitaYaAceptadaLanzaExcepcion(){
         // Arrange
         control.aceptarVisita(visita);
@@ -53,6 +52,34 @@ class ControlVisitaTest {
         assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
 
     }
+
+    @Test
+    void aceptarVisitaYaRechazadaLanzaExcepcion() {
+        control.rechazarVisita(visita);
+
+        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(visita));
+
+        assertEquals(Visita.Estado.RECHAZADA, visita.getEstado());
+    }
+
+    @Test
+    void rechazarVisitaYaRechazadaLanzaExcepcion() {
+        control.rechazarVisita(visita);
+
+        assertThrows(IllegalStateException.class, () -> control.rechazarVisita(visita));
+
+        assertEquals(Visita.Estado.RECHAZADA, visita.getEstado());
+    }
+
+    @Test
+    void rechazarVisitaYaAceptadaLanzaExcepcion() {
+        control.aceptarVisita(visita);
+
+        assertThrows(IllegalStateException.class, () -> control.rechazarVisita(visita));
+
+        assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
+    }
+
 
     @Test
     void solicitarVisitaConPerroDisponibleYFechaFuturaCreaVisitaPendiente() {
