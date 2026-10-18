@@ -21,9 +21,7 @@ public class ControlVisita {
     }
 
     public void aceptarVisita(Visita visita) {
-        if (visita == null) {
-            throw new IllegalArgumentException("La visita es obligatoria");
-        }
+        validarVisita(visita);
         if (horarioOcupado(visita.getFechaVisita())) {
             visita.rechazar();
             return;
@@ -36,10 +34,14 @@ public class ControlVisita {
     }
 
     public void rechazarVisita(Visita visita) {
+        validarVisita(visita);
+        visita.rechazar();
+    }
+
+    private void validarVisita(Visita visita) {
         if (visita == null) {
             throw new IllegalArgumentException("La visita es obligatoria");
         }
-        visita.rechazar();
     }
 
     public Visita solicitarVisita(Perro perro, LocalDate fechaVisita) {

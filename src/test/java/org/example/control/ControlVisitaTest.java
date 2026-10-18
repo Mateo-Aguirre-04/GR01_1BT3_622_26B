@@ -49,16 +49,22 @@ class ControlVisitaTest {
     }
 
     @Test
-    void aceptarVisitaYaAceptadaLanzaExcepcion() {
+    void visitaYaGestionadaLanzaExcepcionAlProcesarseDeNuevo() {
         // Arrange
-        control.aceptarVisita(visita);
+        Visita aceptada = new Visita(LocalDate.now().plusDays(1));
+        Visita rechazada = new Visita(LocalDate.now().plusDays(1));
+        control.aceptarVisita(aceptada);
+        control.rechazarVisita(rechazada);
 
         // Act + Assert
-        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(visita));
+        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(aceptada));
+        assertThrows(IllegalStateException.class, () -> control.rechazarVisita(aceptada));
+        assertThrows(IllegalStateException.class, () -> control.aceptarVisita(rechazada));
+        assertThrows(IllegalStateException.class, () -> control.rechazarVisita(rechazada));
 
         // Assert
-        assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
-
+        assertEquals(Visita.Estado.ACEPTADA, aceptada.getEstado());
+        assertEquals(Visita.Estado.RECHAZADA, rechazada.getEstado());
     }
 
     @Test
