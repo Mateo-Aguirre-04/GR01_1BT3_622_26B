@@ -14,14 +14,27 @@ public class ControlVisita {
         visita.aceptar();
     }
 
-    public Visita solicitarVisita(Perro perro, LocalDate fechaVisita) {
-        if (!fechaVisita.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de visita debe ser futura");
+    public void rechazarVisita(Visita visita) {
+        if (visita == null) {
+            throw new IllegalArgumentException("La visita es obligatoria");
         }
+        visita.rechazar();
+    }
+
+    public Visita solicitarVisita(Perro perro, LocalDate fechaVisita) {
+        validarFecha(fechaVisita);
         if (!perro.estaDisponible()) {
             throw new IllegalArgumentException("El perro no está disponible");
         }
+        return new Visita(fechaVisita);
+    }
 
-        return new Visita();
+    private void validarFecha(LocalDate fechaVisita) {
+        if (fechaVisita == null) {
+            throw new IllegalArgumentException("La fecha de visita es obligatoria");
+        }
+        if (!fechaVisita.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de visita debe ser futura");
+        }
     }
 }
