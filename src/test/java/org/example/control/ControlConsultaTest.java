@@ -33,12 +33,14 @@ class ControlConsultaTest {
     }
 
     @Test
-    void consultarRegistroListaSoloPerrosDisponibles() {
-        List<Perro> disponibles = interfaz.mostrarPerrosDisponibles();
+    void consultarRegistroListaPerrosDisponiblesYNoDisponibles() {
+        List<Perro> perros = interfaz.mostrarPerros();
 
-        assertEquals(1, disponibles.size());
-        assertEquals(201L, disponibles.getFirst().getIdPerro());
-        assertTrue(disponibles.getFirst().estaDisponible());
+        assertEquals(2, perros.size());
+        assertEquals(201L, perros.get(0).getIdPerro());
+        assertTrue(perros.get(0).estaDisponible());
+        assertEquals(202L, perros.get(1).getIdPerro());
+        assertFalse(perros.get(1).estaDisponible());
     }
 
     @Test

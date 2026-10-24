@@ -122,7 +122,7 @@
                     <button class="button button-danger" type="submit">Rechazar solicitud</button>
                 </form>
             </c:if>
-            <a class="button button-secondary" href="${pageContext.request.contextPath}/solicitudes">Volver a solicitudes</a>
+            <a class="button button-secondary" href="${pageContext.request.contextPath}/inicio.jsp">Volver al menú principal</a>
         </div>
     </section>
 </main>

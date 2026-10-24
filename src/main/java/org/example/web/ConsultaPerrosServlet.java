@@ -41,8 +41,8 @@ public class ConsultaPerrosServlet extends HttpServlet {
             throws ServletException, IOException {
         String idPerroParametro = request.getParameter("idPerro");
         if (idPerroParametro == null) {
-            List<Perro> perrosDisponibles = interfaz.mostrarPerrosDisponibles();
-            request.setAttribute("perrosDisponibles", perrosDisponibles);
+            List<Perro> perros = interfaz.mostrarPerros();
+            request.setAttribute("perros", perros);
             request.getRequestDispatcher(CATALOGO).forward(request, response);
             return;
         }

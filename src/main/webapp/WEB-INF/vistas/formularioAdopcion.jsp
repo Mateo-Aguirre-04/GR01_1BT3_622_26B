@@ -154,7 +154,7 @@
             <button type="submit">Enviar solicitud</button>
         </form>
         <nav class="navigation" aria-label="Navegación">
-            <a class="link" href="${pageContext.request.contextPath}/consulta">Volver al catálogo</a>
+            <a class="link" href="${pageContext.request.contextPath}/inicio.jsp">Volver al menú principal</a>
         </nav>
     </section>
 </main>

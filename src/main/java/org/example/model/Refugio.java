@@ -84,6 +84,10 @@ public class Refugio {
                 .toList();
     }
 
+    public synchronized List<Perro> listarPerros() {
+        return List.copyOf(perros);
+    }
+
     public synchronized Perro obtenerFichaPerro(Long idPerro) {
         if (idPerro == null) {
             return null;
