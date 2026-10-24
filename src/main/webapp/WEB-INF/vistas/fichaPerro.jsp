@@ -282,6 +282,9 @@
         </c:choose>
 
         <nav class="actions" aria-label="Navegación de la ficha">
+            <c:if test="${sessionScope.vistaActual == 'gestor' and not empty perro}">
+                <a class="button" href="${pageContext.request.contextPath}/perros/modificar?idPerro=${perro.idPerro}">Modificar datos</a>
+            </c:if>
             <c:if test="${sessionScope.vistaActual != 'gestor' and not empty perro and perro.disponible}">
                 <a class="button button-adoption" href="${pageContext.request.contextPath}/adopcion?idPerro=${perro.idPerro}">Solicitar adopción</a>
                 <a class="button button-adoption" href="${pageContext.request.contextPath}/visitas/solicitar?idPerro=${perro.idPerro}">Solicitar visita</a>
