@@ -5,6 +5,8 @@ import org.example.control.ControlEnvioSolicitud;
 import org.example.control.ControlFormulario;
 import org.example.control.ControlRegistro;
 import org.example.control.ControlSolicitud;
+import org.example.control.ControlSolicitudVisita;
+import org.example.control.ControlGestionVisita;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
 
@@ -16,6 +18,8 @@ public class Main {
     private static ControlFormulario controlFormulario;
     private static ControlEnvioSolicitud controlEnvioSolicitud;
     private static ControlSolicitud controlSolicitud;
+    private static ControlSolicitudVisita controlSolicitudVisita;
+    private static ControlGestionVisita controlGestionVisita;
 
     private Main() {
     }
@@ -29,6 +33,8 @@ public class Main {
             controlFormulario = new ControlFormulario(controlConsulta);
             controlEnvioSolicitud = new ControlEnvioSolicitud(refugio);
             controlSolicitud = new ControlSolicitud(refugio);
+            controlSolicitudVisita = new ControlSolicitudVisita(refugio);
+            controlGestionVisita = new ControlGestionVisita(refugio);
         }
     }
 
@@ -65,6 +71,16 @@ public class Main {
     public static ControlSolicitud getControlSolicitud() {
         initialize();
         return controlSolicitud;
+    }
+
+    public static ControlSolicitudVisita getControlSolicitudVisita() {
+        initialize();
+        return controlSolicitudVisita;
+    }
+
+    public static ControlGestionVisita getControlGestionVisita() {
+        initialize();
+        return controlGestionVisita;
     }
 
     public static void main(String[] args) {

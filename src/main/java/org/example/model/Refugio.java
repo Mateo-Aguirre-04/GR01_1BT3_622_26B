@@ -22,7 +22,9 @@ public class Refugio {
     @OneToMany(mappedBy = "refugio", cascade = CascadeType.ALL)
     private List<Perro> perros = new ArrayList<>();
     private final List<SolicitudAdopcion> solicitudes = new ArrayList<>();
+    private final List<Visita> visitas = new ArrayList<>();
     private long siguienteIdSolicitud = 1L;
+    private long siguienteIdVisita = 1L;
 
     protected Refugio() {
     }
@@ -137,5 +139,48 @@ public class Refugio {
             throw new IllegalArgumentException("No se encontró un perro con ese ID");
         }
         perro.marcarNoDisponible();
+    }
+
+    public synchronized Long obtenerIdVisita() {
+        return siguienteIdVisita++;
+    }
+
+    public synchronized void agregarVisita(Visita visita) {
+        Objects.requireNonNull(visita, "La visita es obligatoria");
+        if (visita.getIdVisita() == null || visita.getIdVisita() <= 0) {
+            throw new IllegalArgumentException("El ID de la visita debe ser mayor que cero");
+        }
+        if (visitas.stream().anyMatch(registrada ->
+                Objects.equals(registrada.getIdVisita(), visita.getIdVisita()))) {
+            throw new IllegalArgumentException("Ya existe una visita con ese ID");
+        }
+        if (visita.getPerro() == null || obtenerFichaPerro(visita.getPerro().getIdPerro()) != visita.getPerro()) {
+            throw new IllegalArgumentException("El perro asociado a la visita no existe en el refugio");
+        }
+        if (visita.getVisitante() == null) {
+            throw new IllegalArgumentException("Los datos del visitante son obligatorios");
+        }
+        visitas.add(visita);
+        siguienteIdVisita = Math.max(siguienteIdVisita, visita.getIdVisita() + 1);
+    }
+
+    public synchronized Visita obtenerVisita(Long idVisita) {
+        if (idVisita == null) {
+            return null;
+        }
+        return visitas.stream()
+                .filter(visita -> Objects.equals(visita.getIdVisita(), idVisita))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public synchronized List<Visita> listarVisitas() {
+        return List.copyOf(visitas);
+    }
+
+    public synchronized List<Visita> listarVisitasPendientes() {
+        return visitas.stream()
+                .filter(visita -> visita.getEstado() == Visita.Estado.PENDIENTE)
+                .toList();
     }
 }

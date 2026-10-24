@@ -40,7 +40,7 @@ class ControlVisitaTest {
         control.aceptarVisita(visita);
 
         // Assert
-        assertEquals(Visita.Estado.ACEPTADA, visita.getEstado());
+        assertEquals(Visita.Estado.APROBADA, visita.getEstado());
     }
 
     @Test
@@ -63,7 +63,7 @@ class ControlVisitaTest {
         assertThrows(IllegalStateException.class, () -> control.rechazarVisita(rechazada));
 
         // Assert
-        assertEquals(Visita.Estado.ACEPTADA, aceptada.getEstado());
+        assertEquals(Visita.Estado.APROBADA, aceptada.getEstado());
         assertEquals(Visita.Estado.RECHAZADA, rechazada.getEstado());
     }
 

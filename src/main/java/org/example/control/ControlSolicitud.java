@@ -45,18 +45,27 @@ public class ControlSolicitud {
 
     public synchronized String aprobarSolicitud(Long idSolicitud) {
         SolicitudAdopcion solicitud = obtenerSolicitud(idSolicitud);
-        Long idPerro = solicitud.obtenerIdPerro();
-        if (refugio.verificarDisponibilidad(idPerro)) {
-            solicitud.aprobar();
-            refugio.marcarNoDisponible(idPerro);
+        synchronized (solicitud) {
+            if (!"Pendiente".equals(solicitud.getEstado())) {
+                throw new IllegalStateException("La solicitud ya fue resuelta");
+            }
+            Long idPerro = solicitud.obtenerIdPerro();
+            if (refugio.verificarDisponibilidad(idPerro)) {
+                solicitud.aprobar();
+                refugio.marcarNoDisponible(idPerro);
+            } else {
+                solicitud.rechazar();
+            }
         }
         return comunicarDecision(idSolicitud);
     }
 
     public synchronized String rechazarSolicitud(Long idSolicitud) {
         SolicitudAdopcion solicitud = obtenerSolicitud(idSolicitud);
-        solicitud.rechazar();
-        return "Solicitud rechazada";
+        synchronized (solicitud) {
+            solicitud.rechazar();
+            return "Solicitud rechazada";
+        }
     }
 
     public String comunicarDecision(Long idSolicitud) {
