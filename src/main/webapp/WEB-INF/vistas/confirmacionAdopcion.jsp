@@ -47,6 +47,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/vistas/selectorVista.jsp"/>
 <main>
     <h1>Solicitud enviada</h1>
     <p>Registramos tu solicitud de adopción con el número

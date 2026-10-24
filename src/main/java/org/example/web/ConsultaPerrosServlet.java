@@ -11,12 +11,30 @@ import org.example.model.Perro;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/consulta")
+@WebServlet(urlPatterns = {"/consulta", "/vista"})
 public class ConsultaPerrosServlet extends HttpServlet {
     private static final String CATALOGO = "/WEB-INF/vistas/consultaPerros.jsp";
     private static final String FICHA = "/WEB-INF/vistas/fichaPerro.jsp";
     private final InterfazConsultaRegistro interfaz =
             new InterfazConsultaRegistro(Main.getControlConsulta());
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        if (!"/vista".equals(request.getServletPath())) {
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+
+        String vista = request.getParameter("vista");
+        if (!"adoptante".equals(vista) && !"gestor".equals(vista)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "La vista seleccionada no es válida.");
+            return;
+        }
+
+        request.getSession().setAttribute("vistaActual", vista);
+        response.sendRedirect(request.getContextPath() + "/inicio.jsp");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

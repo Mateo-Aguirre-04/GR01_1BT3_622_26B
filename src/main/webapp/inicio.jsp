@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -194,6 +195,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/vistas/selectorVista.jsp"/>
 <main class="app-shell">
     <header class="brand-header">
         <h1 class="brand"><span class="brand-icon" aria-hidden="true">🐶</span> POLIPERROS</h1>
@@ -207,24 +209,28 @@
         </div>
 
         <section class="modules" aria-label="Módulos disponibles">
+            <c:if test="${sessionScope.vistaActual == 'gestor'}">
             <article class="module-card">
                 <div class="module-icon" aria-hidden="true">🐶</div>
                 <h3>Registrar perro</h3>
                 <p>Registra un nuevo perro y almacena su información en el sistema.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/registro">Registrar perro</a>
             </article>
+            </c:if>
             <article class="module-card">
                 <div class="module-icon" aria-hidden="true">🔎</div>
                 <h3>Consultar perros</h3>
                 <p>Consulta los perros disponibles y revisa la ficha de cada uno.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/consulta">Consultar perros</a>
             </article>
+            <c:if test="${sessionScope.vistaActual == 'gestor'}">
             <article class="module-card">
                 <div class="module-icon" aria-hidden="true">📋</div>
                 <h3>Gestionar solicitudes</h3>
                 <p>Revisa la información enviada por los adoptantes y gestiona las solicitudes.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/solicitudes">Gestionar solicitudes</a>
             </article>
+            </c:if>
         </section>
     </section>
 </main>

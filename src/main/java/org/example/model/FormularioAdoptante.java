@@ -16,7 +16,6 @@ public class FormularioAdoptante {
     private final boolean aceptacionTerminos;
     private final Adoptante adoptante;
 
-    /*EXTRACT CLASS*/
     public FormularioAdoptante(Map<String, String> datos) {
         Objects.requireNonNull(datos, "Los datos del formulario son obligatorios");
         infoDomicilio = valor(datos, "infoDomicilio");

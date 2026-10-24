@@ -24,6 +24,9 @@ public class AdopcionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esAdoptante(request, response)) {
+            return;
+        }
         request.setCharacterEncoding("UTF-8");
         try {
             Long idPerro = Long.valueOf(parametro(request, "idPerro"));
@@ -39,6 +42,9 @@ public class AdopcionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esAdoptante(request, response)) {
+            return;
+        }
         request.setCharacterEncoding("UTF-8");
         try {
             SolicitudAdopcion solicitud = interfaz.enviarDatosFormulario(datosFormulario(request));
@@ -68,5 +74,14 @@ public class AdopcionServlet extends HttpServlet {
             throw new IllegalArgumentException("El parámetro " + nombre + " es obligatorio");
         }
         return valor.trim();
+    }
+
+    private boolean esAdoptante(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object vistaActual = request.getSession().getAttribute("vistaActual");
+        if (vistaActual == null || "adoptante".equals(vistaActual)) {
+            return true;
+        }
+        response.sendRedirect(request.getContextPath() + "/inicio.jsp");
+        return false;
     }
 }

@@ -209,6 +209,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/vistas/selectorVista.jsp"/>
 <main class="app-shell">
     <header class="brand-header">
         <h1 class="brand"><span class="brand-icon" aria-hidden="true">🐶</span> POLIPERROS</h1>
