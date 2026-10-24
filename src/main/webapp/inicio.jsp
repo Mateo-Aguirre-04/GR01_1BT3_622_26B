@@ -230,6 +230,20 @@
                 <p>Revisa la información enviada por los adoptantes y gestiona las solicitudes.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/solicitudes">Gestionar solicitudes</a>
             </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">🗓️</div>
+                <h3>Gestionar visitas</h3>
+                <p>Consulta las visitas pendientes y decide si se aprueban o se rechazan.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/visitas/gestionar">Gestionar visitas</a>
+            </article>
+            </c:if>
+            <c:if test="${empty sessionScope.vistaActual or sessionScope.vistaActual == 'adoptante'}">
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">🗓️</div>
+                <h3>Solicitar visita</h3>
+                <p>Elige un perro disponible y solicita una fecha para conocerlo.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/visitas/solicitar">Solicitar visita</a>
+            </article>
             </c:if>
         </section>
     </section>
