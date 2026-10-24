@@ -16,7 +16,7 @@ public class InterfazConsultaRegistro {
         this.controlConsulta = Objects.requireNonNull(controlConsulta, "El control de consulta es obligatorio");
     }
 
-    public List<Perro> mostrarPerrosDisponibles() {
+    public List<Perro> mostrarPerros() {
         return controlConsulta.consultarRegistro();
     }
 

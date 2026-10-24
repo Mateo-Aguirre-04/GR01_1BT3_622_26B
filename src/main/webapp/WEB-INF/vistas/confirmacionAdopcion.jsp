@@ -52,7 +52,7 @@
     <h1>Solicitud enviada</h1>
     <p>Registramos tu solicitud de adopción con el número
         <strong><c:out value="${idSolicitud}"/></strong>. El encargado revisará la información.</p>
-    <a href="${pageContext.request.contextPath}/consulta">Volver al catálogo</a>
+    <a href="${pageContext.request.contextPath}/inicio.jsp">Volver al menú principal</a>
 </main>
 </body>
 </html>

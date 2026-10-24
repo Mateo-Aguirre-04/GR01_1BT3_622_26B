@@ -14,7 +14,7 @@ public class ControlConsulta {
     }
 
     public List<Perro> consultarRegistro() {
-        return refugioActual.listarPerrosDisponibles();
+        return refugioActual.listarPerros();
     }
 
     public Perro consultarFicha(Long idPerro) {

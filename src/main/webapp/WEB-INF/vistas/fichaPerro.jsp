@@ -286,7 +286,6 @@
                 <a class="button button-adoption" href="${pageContext.request.contextPath}/adopcion?idPerro=${perro.idPerro}">Solicitar adopción</a>
                 <a class="button button-adoption" href="${pageContext.request.contextPath}/visitas/solicitar?idPerro=${perro.idPerro}">Solicitar visita</a>
             </c:if>
-            <a class="button" href="${pageContext.request.contextPath}/consulta">← Volver al catálogo</a>
             <a class="button button-secondary" href="${pageContext.request.contextPath}/inicio.jsp">← Volver al menú principal</a>
         </nav>
     </section>

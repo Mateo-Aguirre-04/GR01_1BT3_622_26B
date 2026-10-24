@@ -256,19 +256,19 @@
 
     <section class="content" aria-labelledby="catalog-heading">
         <h2 class="heading" id="catalog-heading">Consultar perros</h2>
-        <p class="intro">Perros disponibles actualmente en el refugio.</p>
+        <p class="intro">Todos los perros registrados en el refugio y su disponibilidad actual.</p>
 
         <c:choose>
-            <c:when test="${empty perrosDisponibles}">
+            <c:when test="${empty perros}">
                 <section class="empty-state" aria-live="polite">
                     <div class="empty-icon" aria-hidden="true">🐶</div>
-                    <h3>No hay perros disponibles actualmente.</h3>
-                    <p>Los perros registrados aparecerán aquí cuando estén disponibles.</p>
+                    <h3>No hay perros registrados actualmente.</h3>
+                    <p>Los perros registrados aparecerán aquí.</p>
                 </section>
             </c:when>
             <c:otherwise>
-                <section class="dog-grid" aria-label="Perros disponibles">
-                    <c:forEach var="perro" items="${perrosDisponibles}">
+                <section class="dog-grid" aria-label="Perros registrados">
+                    <c:forEach var="perro" items="${perros}">
                         <article class="dog-card">
                             <div class="dog-icon" aria-hidden="true">🐶</div>
                             <h3><c:out value="${perro.nombre}"/></h3>
@@ -283,7 +283,12 @@
                                 </div>
                                 <div>
                                     <dt>Disponible</dt>
-                                    <dd>Sí</dd>
+                                    <dd>
+                                        <c:choose>
+                                            <c:when test="${perro.disponible}">Sí</c:when>
+                                            <c:otherwise>No</c:otherwise>
+                                        </c:choose>
+                                    </dd>
                                 </div>
                             </dl>
                             <a class="button" href="${pageContext.request.contextPath}/consulta?idPerro=${perro.idPerro}">Ver ficha</a>

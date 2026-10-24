@@ -51,7 +51,7 @@
 <main>
     <h1>Resultado de la decisión</h1>
     <p role="status"><c:out value="${resultadoDecision}"/></p>
-    <a href="${pageContext.request.contextPath}/solicitudes">Volver a solicitudes</a>
+    <a href="${pageContext.request.contextPath}/inicio.jsp">Volver al menú principal</a>
 </main>
 </body>
 </html>
