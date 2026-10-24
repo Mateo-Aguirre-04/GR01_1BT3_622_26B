@@ -7,6 +7,7 @@ import org.example.control.ControlRegistro;
 import org.example.control.ControlSolicitud;
 import org.example.control.ControlSolicitudVisita;
 import org.example.control.ControlGestionVisita;
+import org.example.control.ControlModificacionPerro;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
 
@@ -20,6 +21,7 @@ public class Main {
     private static ControlSolicitud controlSolicitud;
     private static ControlSolicitudVisita controlSolicitudVisita;
     private static ControlGestionVisita controlGestionVisita;
+    private static ControlModificacionPerro controlModificacionPerro;
 
     private Main() {
     }
@@ -35,6 +37,7 @@ public class Main {
             controlSolicitud = new ControlSolicitud(refugio);
             controlSolicitudVisita = new ControlSolicitudVisita(refugio);
             controlGestionVisita = new ControlGestionVisita(refugio);
+            controlModificacionPerro = new ControlModificacionPerro(refugio);
         }
     }
 
@@ -81,6 +84,11 @@ public class Main {
     public static ControlGestionVisita getControlGestionVisita() {
         initialize();
         return controlGestionVisita;
+    }
+
+    public static ControlModificacionPerro getControlModificacionPerro() {
+        initialize();
+        return controlModificacionPerro;
     }
 
     public static void main(String[] args) {
