@@ -24,6 +24,9 @@ public class GestionSolicitudServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esGestor(request, response)) {
+            return;
+        }
         String idParametro = request.getParameter("idSolicitud");
         if (idParametro == null) {
             cargarListado(request);
@@ -51,6 +54,9 @@ public class GestionSolicitudServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esGestor(request, response)) {
+            return;
+        }
         String idParametro = request.getParameter("idSolicitud");
         try {
             request.setAttribute("resultadoDecision", interfaz.enviarDecision(parsearId(idParametro),
@@ -90,5 +96,13 @@ public class GestionSolicitudServlet extends HttpServlet {
             return false;
         }
         throw new IllegalArgumentException("La decisión de la solicitud no es válida");
+    }
+
+    private boolean esGestor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if ("gestor".equals(request.getSession().getAttribute("vistaActual"))) {
+            return true;
+        }
+        response.sendRedirect(request.getContextPath() + "/inicio.jsp");
+        return false;
     }
 }

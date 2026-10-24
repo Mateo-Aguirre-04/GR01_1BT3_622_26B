@@ -19,12 +19,18 @@ public class RegistroPerroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esGestor(request, response)) {
+            return;
+        }
         request.getRequestDispatcher(interfaz.mostrarFormularioRegistro()).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!esGestor(request, response)) {
+            return;
+        }
         request.setCharacterEncoding("UTF-8");
         try {
             Perro perro = interfaz.enviarDatosPerros(request);
@@ -34,5 +40,13 @@ public class RegistroPerroServlet extends HttpServlet {
             request.setAttribute("errorRegistro", exception.getMessage());
             request.getRequestDispatcher(interfaz.mostrarFormularioRegistro()).forward(request, response);
         }
+    }
+
+    private boolean esGestor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if ("gestor".equals(request.getSession().getAttribute("vistaActual"))) {
+            return true;
+        }
+        response.sendRedirect(request.getContextPath() + "/inicio.jsp");
+        return false;
     }
 }

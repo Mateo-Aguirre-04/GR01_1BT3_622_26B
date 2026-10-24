@@ -223,6 +223,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/vistas/selectorVista.jsp"/>
 <main class="app-shell">
     <header class="brand-header">
         <h1 class="brand"><span class="brand-icon" aria-hidden="true">🐶</span> POLIPERROS</h1>
@@ -281,7 +282,7 @@
         </c:choose>
 
         <nav class="actions" aria-label="Navegación de la ficha">
-            <c:if test="${not empty perro and perro.disponible}">
+            <c:if test="${sessionScope.vistaActual != 'gestor' and not empty perro and perro.disponible}">
                 <a class="button button-adoption" href="${pageContext.request.contextPath}/adopcion?idPerro=${perro.idPerro}">Solicitar adopción</a>
             </c:if>
             <a class="button" href="${pageContext.request.contextPath}/consulta">← Volver al catálogo</a>

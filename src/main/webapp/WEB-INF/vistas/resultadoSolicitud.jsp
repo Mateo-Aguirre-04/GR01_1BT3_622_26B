@@ -47,6 +47,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/vistas/selectorVista.jsp"/>
 <main>
     <h1>Resultado de la decisión</h1>
     <p role="status"><c:out value="${resultadoDecision}"/></p>
