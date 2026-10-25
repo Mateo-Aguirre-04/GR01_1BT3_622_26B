@@ -1,5 +1,6 @@
 package org.example.control;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.model.Donacion;
 import org.example.model.Refugio;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ControlRegistroDonacionTest {
     private Refugio refugio;

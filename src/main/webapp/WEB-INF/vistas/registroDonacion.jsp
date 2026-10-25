@@ -18,6 +18,10 @@
         h3 { margin: 0 0 8px; color: #263c63; }
         form.card, .card { max-width: 720px; margin: 0 auto 18px; padding: 22px; border: 1px solid #e3e6ef; border-radius: 14px; }
         .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .material-section { margin-top: 22px; padding: 18px; border: 1px solid #e3e6ef; border-radius: 12px; }
+        .material-section h4 { margin: 0 0 8px; color: #263c63; }
+        .donation-rows { display: grid; gap: 16px; }
+        .donation-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 7px; }
         .wide { grid-column: 1 / -1; }
         label { color: #263c63; font-weight: 600; }
@@ -27,13 +31,14 @@
         th { color: #263c63; }
         p { color: #596579; line-height: 1.5; }
         button, .link { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; padding: 11px 18px; border: 2px solid #41649a; border-radius: 9px; background: #41649a; color: #fff; font: inherit; font-weight: 700; text-align: center; text-decoration: none; cursor: pointer; }
+        button.secondary { margin-top: 14px; background: #fff; color: #41649a; }
         .link { background: #fff; color: #41649a; }
         .actions, .navigation { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
         .error, .success { max-width: 720px; margin: 0 auto 18px; padding: 13px 15px; border-radius: 9px; }
         .error { border: 1px solid #fecaca; background: #fef2f2; color: #991b1b; }
         .success { border: 1px solid #bbf7d0; background: #f0fdf4; color: #166534; }
         .empty { color: #596579; text-align: center; }
-        @media (max-width: 600px) { body { padding: 14px; } .content { padding: 28px 16px; } .fields { grid-template-columns: 1fr; } .wide { grid-column: auto; } .actions, .navigation, .link, button { width: 100%; } }
+        @media (max-width: 600px) { body { padding: 14px; } .content { padding: 28px 16px; } .fields, .donation-row { grid-template-columns: 1fr; } .wide { grid-column: auto; } .actions, .navigation, .link, button { width: 100%; } }
     </style>
 </head>
 <body>
@@ -69,20 +74,80 @@
                 </div>
             </div>
             <h3 style="margin-top: 22px;">Materiales que vas a donar</h3>
-            <p>Completa al menos un material con su cantidad. Deja vacías las filas que no uses.</p>
-            <div class="fields">
-                <c:forEach begin="0" end="2" var="fila">
-                    <div class="form-group">
-                        <label for="material${fila}">Material</label>
-                        <input id="material${fila}" name="material" placeholder="Ej.: Croquetas"
-                               value="<c:out value='${paramValues.material[fila]}'/>">
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidad${fila}">Cantidad</label>
-                        <input id="cantidad${fila}" name="cantidad" type="number" min="1"
-                               value="<c:out value='${paramValues.cantidad[fila]}'/>">
-                    </div>
-                </c:forEach>
+            <p>Completa al menos un material con su cantidad. Puedes agregar las filas que necesites.</p>
+            <section class="material-section" aria-labelledby="alimentos-heading">
+                <h4 id="alimentos-heading">Alimentos</h4>
+                <div id="alimento-rows" class="donation-rows">
+                    <c:choose>
+                        <c:when test="${not empty paramValues.alimento}">
+                            <c:forEach items="${paramValues.alimento}" var="alimento" varStatus="fila">
+                                <div class="donation-row">
+                                    <div class="form-group">
+                                        <label for="alimento-nombre-${fila.index}">Alimento</label>
+                                        <input id="alimento-nombre-${fila.index}" name="alimento" placeholder="Ej.: Croquetas"
+                                               value="<c:out value='${alimento}'/>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alimento-cantidad-${fila.index}">Cantidad</label>
+                                        <input id="alimento-cantidad-${fila.index}" name="cantidadAlimento" type="number" min="1"
+                                               value="<c:out value='${paramValues.cantidadAlimento[fila.index]}'/>">
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="donation-row">
+                                <div class="form-group">
+                                    <label for="alimento-nombre-0">Alimento</label>
+                                    <input id="alimento-nombre-0" name="alimento" placeholder="Ej.: Croquetas">
+                                </div>
+                                <div class="form-group">
+                                    <label for="alimento-cantidad-0">Cantidad</label>
+                                    <input id="alimento-cantidad-0" name="cantidadAlimento" type="number" min="1">
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <button class="secondary" type="button" data-add-row="alimento">Agregar alimento</button>
+            </section>
+            <section class="material-section" aria-labelledby="accesorios-heading">
+                <h4 id="accesorios-heading">Accesorios</h4>
+                <div id="accesorio-rows" class="donation-rows">
+                    <c:choose>
+                        <c:when test="${not empty paramValues.accesorio}">
+                            <c:forEach items="${paramValues.accesorio}" var="accesorio" varStatus="fila">
+                                <div class="donation-row">
+                                    <div class="form-group">
+                                        <label for="accesorio-nombre-${fila.index}">Accesorio</label>
+                                        <input id="accesorio-nombre-${fila.index}" name="accesorio" placeholder="Ej.: Correa"
+                                               value="<c:out value='${accesorio}'/>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="accesorio-cantidad-${fila.index}">Cantidad</label>
+                                        <input id="accesorio-cantidad-${fila.index}" name="cantidadAccesorio" type="number" min="1"
+                                               value="<c:out value='${paramValues.cantidadAccesorio[fila.index]}'/>">
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="donation-row">
+                                <div class="form-group">
+                                    <label for="accesorio-nombre-0">Accesorio</label>
+                                    <input id="accesorio-nombre-0" name="accesorio" placeholder="Ej.: Correa">
+                                </div>
+                                <div class="form-group">
+                                    <label for="accesorio-cantidad-0">Cantidad</label>
+                                    <input id="accesorio-cantidad-0" name="cantidadAccesorio" type="number" min="1">
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <button class="secondary" type="button" data-add-row="accesorio">Agregar accesorio</button>
+            </section>
+            <div class="fields" style="margin-top: 22px;">
                 <div class="form-group wide">
                     <label for="descripcion">Descripción (opcional)</label>
                     <textarea id="descripcion" name="descripcion" rows="3"><c:out value="${param.descripcion}"/></textarea>
@@ -95,5 +160,42 @@
         </nav>
     </section>
 </main>
+<script>
+    document.querySelectorAll("[data-add-row]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const tipo = button.dataset.addRow;
+            const contenedor = document.getElementById(tipo + "-rows");
+            const indice = contenedor.querySelectorAll(".donation-row").length;
+            const etiqueta = tipo === "alimento" ? "Alimento" : "Accesorio";
+            const ejemplo = tipo === "alimento" ? "Ej.: Croquetas" : "Ej.: Correa";
+            const fila = document.createElement("div");
+            fila.className = "donation-row";
+
+            [
+                { sufijo: "nombre", etiqueta, nombre: tipo, tipo: "text", placeholder: ejemplo },
+                { sufijo: "cantidad", etiqueta: "Cantidad", nombre: "cantidad" + etiqueta, tipo: "number", placeholder: "" }
+            ].forEach((campo) => {
+                const grupo = document.createElement("div");
+                grupo.className = "form-group";
+                const id = tipo + "-" + campo.sufijo + "-" + indice;
+                const label = document.createElement("label");
+                label.htmlFor = id;
+                label.textContent = campo.etiqueta;
+                const input = document.createElement("input");
+                input.id = id;
+                input.name = campo.nombre;
+                input.type = campo.tipo;
+                if (campo.tipo === "number") {
+                    input.min = "1";
+                } else {
+                    input.placeholder = campo.placeholder;
+                }
+                grupo.append(label, input);
+                fila.append(grupo);
+            });
+            contenedor.append(fila);
+        });
+    });
+</script>
 </body>
 </html>
