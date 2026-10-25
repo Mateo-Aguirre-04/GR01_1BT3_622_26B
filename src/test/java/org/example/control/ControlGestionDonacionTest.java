@@ -34,13 +34,25 @@ class ControlGestionDonacionTest {
     }
 
     @Test
-    void confirmarDonacionYaRecibidaLanzaExcepcion() {
-        control.confirmarRecepcion(donacion.getIdDonacion());
+    void noPermiteConfirmarUnaDonacionYaRecibida() {
+        givenDonacionRecibida();
 
-        IllegalStateException error = assertThrows(IllegalStateException.class,
-                () -> control.confirmarRecepcion(donacion.getIdDonacion()));
+        IllegalStateException error = assertThrows(
+                IllegalStateException.class,
+                () -> control.confirmarRecepcion(donacion.getIdDonacion())
+        );
 
         assertEquals("La donación ya fue recibida", error.getMessage());
         assertEquals(Donacion.Estado.RECIBIDA, donacion.getEstado());
+    }
+
+    private void givenDonacionRecibida() {
+        control.confirmarRecepcion(donacion.getIdDonacion());
+
+        assertEquals(
+                Donacion.Estado.RECIBIDA,
+                donacion.getEstado(),
+                "Precondición: la donación debe estar RECIBIDA"
+        );
     }
 }
