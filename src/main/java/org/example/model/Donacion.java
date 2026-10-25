@@ -47,7 +47,14 @@ public class Donacion {
     }
 
     public synchronized void marcarRecibida() {
+        validarPendiente();
         estado = Estado.RECIBIDA;
+    }
+
+    private void validarPendiente() {
+        if (estado != Estado.PENDIENTE) {
+            throw new IllegalStateException("La donación ya fue recibida");
+        }
     }
 
     public Long getIdDonacion() {

@@ -30,16 +30,7 @@ public class ControlGestionDonacion {
 
     public String confirmarRecepcion(Long idDonacion) {
         Donacion donacion = obtenerDonacion(idDonacion);
-        synchronized (donacion) {
-            validarPendiente(donacion);
-            donacion.marcarRecibida();
-        }
+        donacion.marcarRecibida();
         return "La donación fue recibida correctamente.";
-    }
-
-    private void validarPendiente(Donacion donacion) {
-        if (donacion.getEstado() != Donacion.Estado.PENDIENTE) {
-            throw new IllegalStateException("La donación ya fue recibida");
-        }
     }
 }
