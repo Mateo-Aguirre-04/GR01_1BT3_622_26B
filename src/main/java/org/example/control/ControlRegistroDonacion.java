@@ -43,8 +43,15 @@ public class ControlRegistroDonacion {
     }
 
     private void agregarMateriales(HttpServletRequest solicitud, Donacion donacion) {
-        String[] materiales = solicitud.getParameterValues("material");
-        String[] cantidades = solicitud.getParameterValues("cantidad");
+        agregarMateriales(solicitud, donacion, "alimento", "cantidadAlimento");
+        agregarMateriales(solicitud, donacion, "accesorio", "cantidadAccesorio");
+        agregarMateriales(solicitud, donacion, "material", "cantidad");
+    }
+
+    private void agregarMateriales(HttpServletRequest solicitud, Donacion donacion,
+                                  String parametroMaterial, String parametroCantidad) {
+        String[] materiales = solicitud.getParameterValues(parametroMaterial);
+        String[] cantidades = solicitud.getParameterValues(parametroCantidad);
         if (materiales == null) {
             return;
         }
