@@ -32,4 +32,15 @@ class ControlGestionDonacionTest {
         assertEquals("La donación fue recibida correctamente.", resultado);
         assertTrue(control.listarDonacionesPendientes().isEmpty());
     }
+
+    @Test
+    void confirmarDonacionYaRecibidaLanzaExcepcion() {
+        control.confirmarRecepcion(donacion.getIdDonacion());
+
+        IllegalStateException error = assertThrows(IllegalStateException.class,
+                () -> control.confirmarRecepcion(donacion.getIdDonacion()));
+
+        assertEquals("La donación ya fue recibida", error.getMessage());
+        assertEquals(Donacion.Estado.RECIBIDA, donacion.getEstado());
+    }
 }
