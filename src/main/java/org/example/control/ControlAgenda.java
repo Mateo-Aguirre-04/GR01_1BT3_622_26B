@@ -46,7 +46,14 @@ public class ControlAgenda {
 
     public List<RegistroMedico> consultarAgenda(Long idPerro) {
         List<RegistroMedico> agenda = new ArrayList<>();
-        return null;
+        for (RegistroMedico registro : obtenerPerro(idPerro).getRegistrosMedicos()) {
+            int posicion = 0;
+            while (posicion < agenda.size() && !agenda.get(posicion).getFecha().isAfter(registro.getFecha())) {
+                posicion++;
+            }
+            agenda.add(posicion, registro);
+        }
+        return agenda;
     }
 
     private RegistroMedico.Tipo convertirTipo(String tipo) {
