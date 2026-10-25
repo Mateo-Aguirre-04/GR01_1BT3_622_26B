@@ -6,8 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +30,9 @@ public class Perro {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_refugio", nullable = false)
     private Refugio refugio;
+
+    @Transient
+    private final List<RegistroMedico> registrosMedicos = new ArrayList<>();
 
     protected Perro() {
     }
@@ -127,5 +134,16 @@ public class Perro {
 
     public void marcarNoDisponible() {
         disponible = false;
+    }
+
+    public synchronized void agregarRegistroMedico(RegistroMedico registro) {
+        if (registro == null) {
+            throw new IllegalArgumentException("El registro médico es obligatorio");
+        }
+        registrosMedicos.add(registro);
+    }
+
+    public synchronized List<RegistroMedico> getRegistrosMedicos() {
+        return Collections.unmodifiableList(new ArrayList<>(registrosMedicos));
     }
 }
