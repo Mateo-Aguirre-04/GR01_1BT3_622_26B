@@ -34,12 +34,12 @@ public class ControlGestionDonacion {
             validarPendiente(donacion);
             donacion.marcarRecibida();
         }
-        return "";
+        return "La donación fue recibida correctamente.";
     }
 
     private void validarPendiente(Donacion donacion) {
         if (donacion.getEstado() != Donacion.Estado.PENDIENTE) {
-            throw new IllegalStateException("");
+            throw new IllegalStateException("La donación ya fue recibida");
         }
     }
 }
