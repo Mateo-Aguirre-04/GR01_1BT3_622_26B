@@ -8,6 +8,9 @@ import org.example.control.ControlSolicitud;
 import org.example.control.ControlSolicitudVisita;
 import org.example.control.ControlGestionVisita;
 import org.example.control.ControlModificacionPerro;
+import org.example.control.ControlRegistroDonacion;
+import org.example.control.ControlGestionDonacion;
+import org.example.control.ControlAgenda;
 import org.example.model.Encargado;
 import org.example.model.Refugio;
 
@@ -22,6 +25,9 @@ public class Main {
     private static ControlSolicitudVisita controlSolicitudVisita;
     private static ControlGestionVisita controlGestionVisita;
     private static ControlModificacionPerro controlModificacionPerro;
+    private static ControlRegistroDonacion controlRegistroDonacion;
+    private static ControlGestionDonacion controlGestionDonacion;
+    private static ControlAgenda controlAgenda;
 
     private Main() {
     }
@@ -38,6 +44,9 @@ public class Main {
             controlSolicitudVisita = new ControlSolicitudVisita(refugio);
             controlGestionVisita = new ControlGestionVisita(refugio);
             controlModificacionPerro = new ControlModificacionPerro(refugio);
+            controlRegistroDonacion = new ControlRegistroDonacion(refugio);
+            controlGestionDonacion = new ControlGestionDonacion(refugio);
+            controlAgenda = new ControlAgenda(refugio);
         }
     }
 
@@ -89,6 +98,21 @@ public class Main {
     public static ControlModificacionPerro getControlModificacionPerro() {
         initialize();
         return controlModificacionPerro;
+    }
+
+    public static ControlRegistroDonacion getControlRegistroDonacion() {
+        initialize();
+        return controlRegistroDonacion;
+    }
+
+    public static ControlGestionDonacion getControlGestionDonacion() {
+        initialize();
+        return controlGestionDonacion;
+    }
+
+    public static ControlAgenda getControlAgenda() {
+        initialize();
+        return controlAgenda;
     }
 
     public static void main(String[] args) {
