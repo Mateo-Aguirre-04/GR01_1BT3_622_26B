@@ -45,14 +45,14 @@ public class ControlAgenda {
 
 
     public List<RegistroMedico> consultarAgenda(Long idPerro) {
-        List<RegistroMedico> agenda = new ArrayList<>();
-        for (RegistroMedico registro : obtenerPerro(idPerro).getRegistrosMedicos()) {
-            int posicion = 0;
-            while (posicion < agenda.size() && !agenda.get(posicion).getFecha().isAfter(registro.getFecha())) {
-                posicion++;
-            }
-            agenda.add(posicion, registro);
-        }
+        List<RegistroMedico> agenda = new ArrayList<>(
+                obtenerPerro(idPerro).getRegistrosMedicos()
+        );
+
+        agenda.sort((r1, r2) ->
+                r1.getFecha().compareTo(r2.getFecha())
+        );
+
         return agenda;
     }
 
