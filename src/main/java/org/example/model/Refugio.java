@@ -23,8 +23,10 @@ public class Refugio {
     private List<Perro> perros = new ArrayList<>();
     private final List<SolicitudAdopcion> solicitudes = new ArrayList<>();
     private final List<Visita> visitas = new ArrayList<>();
+    private final List<Donacion> donaciones = new ArrayList<>();
     private long siguienteIdSolicitud = 1L;
     private long siguienteIdVisita = 1L;
+    private long siguienteIdDonacion = 1L;
 
     protected Refugio() {
     }
@@ -185,6 +187,43 @@ public class Refugio {
     public synchronized List<Visita> listarVisitasPendientes() {
         return visitas.stream()
                 .filter(visita -> visita.getEstado() == Visita.Estado.PENDIENTE)
+                .toList();
+    }
+
+    public synchronized Long obtenerIdDonacion() {
+        return siguienteIdDonacion++;
+    }
+
+    public synchronized void agregarDonacion(Donacion donacion) {
+        Objects.requireNonNull(donacion, "La donación es obligatoria");
+        if (donacion.cantidadDeMateriales() == 0) {
+            throw new IllegalArgumentException("La donación debe tener al menos un material");
+        }
+        if (donaciones.stream().anyMatch(registrada ->
+                Objects.equals(registrada.getIdDonacion(), donacion.getIdDonacion()))) {
+            throw new IllegalArgumentException("Ya existe una donación con ese ID");
+        }
+        donaciones.add(donacion);
+        siguienteIdDonacion = Math.max(siguienteIdDonacion, donacion.getIdDonacion() + 1);
+    }
+
+    public synchronized Donacion obtenerDonacion(Long idDonacion) {
+        if (idDonacion == null) {
+            return null;
+        }
+        return donaciones.stream()
+                .filter(donacion -> Objects.equals(donacion.getIdDonacion(), idDonacion))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public synchronized List<Donacion> listarDonaciones() {
+        return List.copyOf(donaciones);
+    }
+
+    public synchronized List<Donacion> listarDonacionesPendientes() {
+        return donaciones.stream()
+                .filter(donacion -> donacion.getEstado() == Donacion.Estado.PENDIENTE)
                 .toList();
     }
 }
