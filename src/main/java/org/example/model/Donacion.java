@@ -46,6 +46,10 @@ public class Donacion {
         return Collections.unmodifiableList(new ArrayList<>(items));
     }
 
+    public synchronized void marcarRecibida() {
+        estado = Estado.RECIBIDA;
+    }
+
     public Long getIdDonacion() {
         return idDonacion;
     }
