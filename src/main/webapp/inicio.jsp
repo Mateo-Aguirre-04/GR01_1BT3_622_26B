@@ -236,6 +236,18 @@
                 <p>Consulta las visitas pendientes y decide si se aprueban o se rechazan.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/visitas/gestionar">Gestionar visitas</a>
             </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">📦</div>
+                <h3>Gestionar donaciones</h3>
+                <p>Revisa las donaciones anunciadas y confirma la recepción de los materiales.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/donaciones/gestionar">Gestionar donaciones</a>
+            </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">💉</div>
+                <h3>Agenda médica</h3>
+                <p>Registra vacunas y controles médicos, y consulta la agenda de cada perro.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/agenda">Agenda médica</a>
+            </article>
             </c:if>
             <c:if test="${empty sessionScope.vistaActual or sessionScope.vistaActual == 'adoptante'}">
             <article class="module-card">
@@ -243,6 +255,12 @@
                 <h3>Solicitar visita</h3>
                 <p>Elige un perro disponible y solicita una fecha para conocerlo.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/visitas/solicitar">Solicitar visita</a>
+            </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">🎁</div>
+                <h3>Donar al refugio</h3>
+                <p>Indica los materiales que quieres donar y sus cantidades.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/donaciones/registrar">Donar al refugio</a>
             </article>
             </c:if>
         </section>
