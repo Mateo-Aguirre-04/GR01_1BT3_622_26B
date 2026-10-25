@@ -2,16 +2,18 @@ package org.example.control;
 
 import org.example.model.Perro;
 import org.example.model.Refugio;
+import org.example.model.RegistroMedico;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ControlAgendaTest {
 
@@ -45,5 +47,16 @@ class ControlAgendaTest {
                 Arguments.of(1L, "CIRUGIA", "Antirrábica", fecha, "tipo no válido"),
                 Arguments.of(1L, "VACUNA", " ", fecha, "detalle vacío"),
                 Arguments.of(1L, "CONTROL", "Revisión general", null, "fecha vacía"));
+    }
+
+    @Test
+    void agendaSeMuestraOrdenadaPorFecha() {
+        control.registrarEnAgenda(1L, "CONTROL", "Revisión general", LocalDate.of(2026, 12, 1));
+        control.registrarEnAgenda(1L, "VACUNA", "Antirrábica", LocalDate.of(2026, 11, 5));
+
+        List<RegistroMedico> agenda = control.consultarAgenda(1L);
+
+        assertEquals(LocalDate.of(2026, 11, 5), agenda.get(0).getFecha());
+        assertEquals(LocalDate.of(2026, 12, 1), agenda.get(1).getFecha());
     }
 }

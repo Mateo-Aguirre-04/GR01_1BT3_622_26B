@@ -5,6 +5,7 @@ import org.example.model.RegistroMedico;
 import org.example.model.Refugio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,12 @@ public class ControlAgenda {
         RegistroMedico registro = new RegistroMedico(siguienteIdRegistro++, tipoRegistro, detalle.trim(), fecha);
         perro.agregarRegistroMedico(registro);
         return registro;
+    }
+
+
+    public List<RegistroMedico> consultarAgenda(Long idPerro) {
+        List<RegistroMedico> agenda = new ArrayList<>();
+        return null;
     }
 
     private RegistroMedico.Tipo convertirTipo(String tipo) {
