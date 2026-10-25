@@ -3,6 +3,7 @@ package org.example.web;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.control.ControlRegistroDonacion;
 import org.example.model.Donacion;
+import org.junit.jupiter.api.BeforeEach;
 import org.example.model.Refugio;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class InterfazDonacionTest {
+    private Refugio refugio;
+    private InterfazDonacion interfaz;
+
+    @BeforeEach
+    void setUp() {
+        refugio = new Refugio(1L, "Refugio Central", "Quito");
+        interfaz = new InterfazDonacion(new ControlRegistroDonacion(refugio));
+    }
 
     @Test
     void enviarDonacionLeeElFormularioYRegistraLaDonacion() {
@@ -25,8 +34,6 @@ class InterfazDonacionTest {
         when(formulario.getParameterValues("material")).thenReturn(new String[]{"Croquetas"});
         when(formulario.getParameterValues("cantidad")).thenReturn(new String[]{"5"});
 
-        Refugio refugio = new Refugio(1L, "Refugio Central", "Quito");
-        InterfazDonacion interfaz = new InterfazDonacion(new ControlRegistroDonacion(refugio));
 
         Donacion donacion = interfaz.enviarDonacion(formulario);
 
