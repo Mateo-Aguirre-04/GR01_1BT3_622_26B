@@ -39,7 +39,7 @@ docker run -d --name servidor-jenkins -p 8080:8080 mateoaguirre04/jenkins-polipe
 
 La aplicación web puede desplegarse mediante una imagen preconstruida disponible en Docker Hub o mediante la construcción local de una imagen a partir del archivo ejecutable `.war`.
 
-### 3.1. Alternativa A: Descarga directa desde Docker Hub (recomendada)
+### 3.1. Descarga directa desde Docker Hub
 
 Esta alternativa no requiere disponer del código fuente ni de archivos locales del proyecto.
 
@@ -50,50 +50,7 @@ docker pull mateoaguirre04/poliperros-app:latest
 docker run -d --name contenedor-poliperros -p 8081:8080 mateoaguirre04/poliperros-app:latest
 ```
 
-### 3.2. Alternativa B: Construcción local con archivo WAR
-
-Si dispone del archivo ejecutable generado localmente, puede construir la imagen Docker de forma manual siguiendo estos pasos:
-
-**Paso 1. Organización de directorios**
-
-Cree una carpeta vacía en su equipo. Por ejemplo:
-
-```text
-despliegue-poliperros/
-```
-
-**Paso 2. Ubicación de archivos**
-
-Copie dentro de la carpeta los siguientes archivos:
-
-- El archivo ejecutable de la aplicación, denominado exactamente `gestion-refugio.war`.
-- El archivo `Dockerfile` del proyecto.
-
-La estructura de directorios debe quedar de la siguiente manera:
-
-```text
-despliegue-poliperros/
-├── gestion-refugio.war
-└── Dockerfile
-```
-
-**Paso 3. Construcción de la imagen**
-
-Abra una terminal en la carpeta creada y ejecute el siguiente comando:
-
-```bash
-docker build -t app-poliperros-local .
-```
-
-**Paso 4. Inicialización del contenedor**
-
-Una vez finalizada la construcción de la imagen, inicie el contenedor con el siguiente comando:
-
-```bash
-docker run -d --name contenedor-poliperros -p 8081:8080 app-poliperros-local
-```
-
-### 3.3. Acceso al sistema web
+### 3.2. Acceso al sistema web
 
 Después de iniciar el contenedor, siga estos pasos:
 
