@@ -3,7 +3,7 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
-class Inventario {
+public class Inventario {
 
     private final List<Material> materiales = new ArrayList<>();
 

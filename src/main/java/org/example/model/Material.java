@@ -1,6 +1,6 @@
 package org.example.model;
 
-class Material {
+public class Material {
 
     private String nombre;
     private String unidad;
