@@ -46,8 +46,8 @@ Esta alternativa no requiere disponer del código fuente ni de archivos locales 
 Ejecute los siguientes comandos para descargar la imagen e iniciar el contenedor de la aplicación:
 
 ```bash
-docker pull mateoaguirre04/app-poliperros:latest
-docker run -d --name contenedor-poliperros -p 8081:8080 mateoaguirre04/app-poliperros:latest
+docker pull mateoaguirre04/poliperros-app:latest
+docker run -d --name contenedor-poliperros -p 8081:8080 mateoaguirre04/poliperros-app:latest
 ```
 
 ### 3.2. Alternativa B: Construcción local con archivo WAR
