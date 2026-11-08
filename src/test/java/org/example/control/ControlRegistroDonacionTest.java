@@ -48,6 +48,17 @@ class ControlRegistroDonacionTest {
     }
 
     @Test
+    void registrarDonacionUsaKilogramosParaAlimentosYUnidadesParaAccesorios() {
+        Donacion donacion = control.registrarDonacion(DonacionRequestTestFactory.crearPorCategoria(
+                DonacionRequestTestFactory.contactoCompleto(),
+                new String[]{"Croquetas"}, new String[]{"10"},
+                new String[]{"Correa"}, new String[]{"2"}));
+
+        assertEquals("kg", donacion.getItems().get(0).getUnidad());
+        assertEquals("unidades", donacion.getItems().get(1).getUnidad());
+    }
+
+    @Test
     void registrarDonacionSinContactoLanzaExcepcion() {
         IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
                 () -> control.registrarDonacion(DonacionRequestTestFactory.crear(

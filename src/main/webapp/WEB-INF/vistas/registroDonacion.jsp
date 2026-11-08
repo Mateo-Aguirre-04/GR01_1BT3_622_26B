@@ -74,7 +74,7 @@
                 </div>
             </div>
             <h3 style="margin-top: 22px;">Materiales que vas a donar</h3>
-            <p>Completa al menos un material con su cantidad. Puedes agregar las filas que necesites.</p>
+            <p>Completa al menos un material con su cantidad. Los alimentos se registran en kg y los accesorios en unidades. Puedes agregar las filas que necesites.</p>
             <section class="material-section" aria-labelledby="alimentos-heading">
                 <h4 id="alimentos-heading">Alimentos</h4>
                 <div id="alimento-rows" class="donation-rows">
@@ -88,7 +88,7 @@
                                                value="<c:out value='${alimento}'/>">
                                     </div>
                                     <div class="form-group">
-                                        <label for="alimento-cantidad-${fila.index}">Cantidad</label>
+                                        <label for="alimento-cantidad-${fila.index}">Cantidad (kg)</label>
                                         <input id="alimento-cantidad-${fila.index}" name="cantidadAlimento" type="number" min="1"
                                                value="<c:out value='${paramValues.cantidadAlimento[fila.index]}'/>">
                                     </div>
@@ -102,7 +102,7 @@
                                     <input id="alimento-nombre-0" name="alimento" placeholder="Ej.: Croquetas">
                                 </div>
                                 <div class="form-group">
-                                    <label for="alimento-cantidad-0">Cantidad</label>
+                                    <label for="alimento-cantidad-0">Cantidad (kg)</label>
                                     <input id="alimento-cantidad-0" name="cantidadAlimento" type="number" min="1">
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
                                                value="<c:out value='${accesorio}'/>">
                                     </div>
                                     <div class="form-group">
-                                        <label for="accesorio-cantidad-${fila.index}">Cantidad</label>
+                                        <label for="accesorio-cantidad-${fila.index}">Cantidad (unidades)</label>
                                         <input id="accesorio-cantidad-${fila.index}" name="cantidadAccesorio" type="number" min="1"
                                                value="<c:out value='${paramValues.cantidadAccesorio[fila.index]}'/>">
                                     </div>
@@ -138,7 +138,7 @@
                                     <input id="accesorio-nombre-0" name="accesorio" placeholder="Ej.: Correa">
                                 </div>
                                 <div class="form-group">
-                                    <label for="accesorio-cantidad-0">Cantidad</label>
+                                    <label for="accesorio-cantidad-0">Cantidad (unidades)</label>
                                     <input id="accesorio-cantidad-0" name="cantidadAccesorio" type="number" min="1">
                                 </div>
                             </div>
@@ -173,7 +173,13 @@
 
             [
                 { sufijo: "nombre", etiqueta, nombre: tipo, tipo: "text", placeholder: ejemplo },
-                { sufijo: "cantidad", etiqueta: "Cantidad", nombre: "cantidad" + etiqueta, tipo: "number", placeholder: "" }
+                {
+                    sufijo: "cantidad",
+                    etiqueta: tipo === "alimento" ? "Cantidad (kg)" : "Cantidad (unidades)",
+                    nombre: "cantidad" + etiqueta,
+                    tipo: "number",
+                    placeholder: ""
+                }
             ].forEach((campo) => {
                 const grupo = document.createElement("div");
                 grupo.className = "form-group";

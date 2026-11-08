@@ -43,13 +43,13 @@ public class ControlRegistroDonacion {
     }
 
     private void agregarMateriales(HttpServletRequest solicitud, Donacion donacion) {
-        agregarMateriales(solicitud, donacion, "alimento", "cantidadAlimento");
-        agregarMateriales(solicitud, donacion, "accesorio", "cantidadAccesorio");
-        agregarMateriales(solicitud, donacion, "material", "cantidad");
+        agregarMateriales(solicitud, donacion, "alimento", "cantidadAlimento", "kg");
+        agregarMateriales(solicitud, donacion, "accesorio", "cantidadAccesorio", "unidades");
+        agregarMateriales(solicitud, donacion, "material", "cantidad", "unidades");
     }
 
     private void agregarMateriales(HttpServletRequest solicitud, Donacion donacion,
-                                  String parametroMaterial, String parametroCantidad) {
+                                  String parametroMaterial, String parametroCantidad, String unidad) {
         String[] materiales = solicitud.getParameterValues(parametroMaterial);
         String[] cantidades = solicitud.getParameterValues(parametroCantidad);
         if (materiales == null) {
@@ -62,7 +62,7 @@ public class ControlRegistroDonacion {
             if (material.isEmpty() && cantidadTexto.isEmpty()) {
                 continue;
             }
-            donacion.agregarMaterial(material, convertirCantidad(material, cantidadTexto));
+            donacion.agregarMaterial(material, convertirCantidad(material, cantidadTexto), unidad);
         }
     }
 

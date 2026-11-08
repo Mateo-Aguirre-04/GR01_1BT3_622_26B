@@ -10,6 +10,20 @@ final class DonacionRequestTestFactory {
     }
 
     static HttpServletRequest crear(Map<String, String> datos, String[] materiales, String[] cantidades) {
+        return crear(datos, Map.of("material", materiales, "cantidad", cantidades));
+    }
+
+    static HttpServletRequest crearPorCategoria(Map<String, String> datos, String[] alimentos,
+                                                String[] cantidadesAlimentos, String[] accesorios,
+                                                String[] cantidadesAccesorios) {
+        return crear(datos, Map.of(
+                "alimento", alimentos,
+                "cantidadAlimento", cantidadesAlimentos,
+                "accesorio", accesorios,
+                "cantidadAccesorio", cantidadesAccesorios));
+    }
+
+    private static HttpServletRequest crear(Map<String, String> datos, Map<String, String[]> parametros) {
         return (HttpServletRequest) Proxy.newProxyInstance(
                 HttpServletRequest.class.getClassLoader(),
                 new Class<?>[]{HttpServletRequest.class},
@@ -18,13 +32,7 @@ final class DonacionRequestTestFactory {
                         return datos.get((String) args[0]);
                     }
                     if ("getParameterValues".equals(method.getName())) {
-                        if ("material".equals(args[0])) {
-                            return materiales;
-                        }
-                        if ("cantidad".equals(args[0])) {
-                            return cantidades;
-                        }
-                        return null;
+                        return parametros.get((String) args[0]);
                     }
                     throw new UnsupportedOperationException(method.getName());
                 });
