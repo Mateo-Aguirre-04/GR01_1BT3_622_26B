@@ -17,13 +17,13 @@ public class ControlConsumo {
 
     public ControlConsumo(Inventario inventario, RegistroMovimientos registroMovimientos) {
         this.inventario = Objects.requireNonNull(inventario, "El inventario es obligatorio");
-        this.registroMovimientos = Objects.requireNonNull(registroMovimientos, "El registro de movimientos es obligatorio");
+        this.registroMovimientos = Objects.requireNonNull(registroMovimientos,
+                "El registro de movimientos es obligatorio");
     }
 
     public List<Material> listarMateriales() {
         return inventario.listarMateriales();
     }
-
 
     public synchronized String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
         int cantidad = validadorCantidad.convertir(cantidadTexto);
@@ -31,14 +31,13 @@ public class ControlConsumo {
         if (material == null) {
             throw new IllegalArgumentException("El material seleccionado no existe en el inventario.");
         }
-        int stockRestante = material.getStock() - cantidad;
-        if (stockRestante < 0) {
+        if (!material.puedeDescontar(cantidad)) {
             throw new IllegalArgumentException(SIN_EXISTENCIAS);
         }
         material.descontar(cantidad);
         registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
         return "Consumo registrado: " + material.getNombre()
                 + ", cantidad consumida " + cantidad + " " + material.getUnidad()
-                + ", stock restante " + stockRestante + " " + material.getUnidad() + ".";
+                + ", stock restante " + material.getStock() + " " + material.getUnidad() + ".";
     }
 }
