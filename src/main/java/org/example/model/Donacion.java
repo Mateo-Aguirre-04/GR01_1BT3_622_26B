@@ -30,7 +30,7 @@ public class Donacion {
     }
 
     public synchronized void agregarMaterial(String material, int cantidad, String unidad) {
-        items.add(new ItemDonacion(material, cantidad));
+        items.add(new ItemDonacion(material, cantidad, unidad));
     }
 
     public synchronized int cantidadDeMateriales() {

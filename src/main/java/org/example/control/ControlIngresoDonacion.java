@@ -2,6 +2,8 @@ package org.example.control;
 
 import org.example.model.Donacion;
 import org.example.model.Inventario;
+import org.example.model.ItemDonacion;
+import org.example.model.Material;
 import org.example.model.RepositorioDonaciones;
 
 import java.util.List;
@@ -22,8 +24,47 @@ public class ControlIngresoDonacion {
                 .toList();
     }
 
-    public String aprobarIngreso(Long idDonacion) {
-        return null;
+    public synchronized String aprobarIngreso(Long idDonacion) {
+        Donacion donacion = obtenerDonacion(idDonacion);
+        donacion.marcarIngresada();
+        StringBuilder confirmacion = new StringBuilder("Donación #" + donacion.getIdDonacion() + " ingresada al inventario.");
+        for (ItemDonacion item : donacion.getItems()) {
+            boolean materialNuevo = !inventario.existe(item.getMaterial());
+            Material material = ingresarAlInventario(item.getMaterial(), item.getUnidad(), item.getCantidad());
+            confirmacion.append(' ').append(describirIngreso(material, item.getCantidad(), materialNuevo));
+        }
+        return confirmacion.toString();
     }
 
+    private Donacion obtenerDonacion(Long idDonacion) {
+        if (idDonacion == null || idDonacion <= 0) {
+            throw new IllegalArgumentException("El ID de la donación debe ser mayor que cero");
+        }
+        Donacion donacion = repositorio.obtenerDonacion(idDonacion);
+        if (donacion == null) {
+            throw new IllegalArgumentException("No se encontró una donación con ese ID");
+        }
+        return donacion;
+    }
+
+    private Material ingresarAlInventario(String nombre, String unidad, int cantidad) {
+        Material material = inventario.buscar(nombre);
+        if (material == null) {
+            material = new Material(nombre, unidad, cantidad);
+            inventario.agregar(material);
+        } else {
+            material.agregar(cantidad);
+        }
+        return material;
+    }
+
+    private String describirIngreso(Material material, int cantidad, boolean materialNuevo) {
+        String unidad = material.getUnidad();
+        if (materialNuevo) {
+            return material.getNombre() + ": cantidad recibida " + cantidad + " " + unidad
+                    + ", stock inicial registrado " + material.getStock() + " " + unidad + ".";
+        }
+        return material.getNombre() + ": cantidad ingresada " + cantidad + " " + unidad
+                + ", stock actualizado " + material.getStock() + " " + unidad + ".";
+    }
 }
