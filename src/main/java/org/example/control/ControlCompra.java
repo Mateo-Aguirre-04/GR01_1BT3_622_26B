@@ -3,61 +3,39 @@ package org.example.control;
 import org.example.model.Inventario;
 import org.example.model.Material;
 
-public class ControlCompra {
+import java.util.List;
+import java.util.Objects;
 
-    private Inventario inventario;
+public class ControlCompra {
+    private final Inventario inventario;
+    private final ValidadorCantidad validadorCantidad = new ValidadorCantidad();
 
     public ControlCompra(Inventario inventario) {
-        this.inventario = inventario;
+        this.inventario = Objects.requireNonNull(inventario, "El inventario es obligatorio");
     }
 
-    public String registrarCompra(String nombre, String cantidad) {
-        if (cantidad == null || cantidad.trim().isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Debe ingresar una cantidad válida."
-            );
-        }
-
-        int cantidadComprada;
-
-        try {
-            cantidadComprada = Integer.parseInt(cantidad.trim());
-
-            if (cantidadComprada <= 0) {
-                throw new IllegalArgumentException(
-                        "Debe ingresar una cantidad válida."
-                );
-            }
-
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "Debe ingresar una cantidad válida."
-            );
-        }
-
-        Material material = inventario.buscar(nombre);
-        material.agregar(cantidadComprada);
-
-        return "Compra registrada: " + nombre
-                + ", cantidad comprada " + cantidadComprada
-                + " " + material.getUnidad()
-                + ", stock actualizado " + material.getStock()
-                + " " + material.getUnidad() + ".";
+    public List<Material> listarMateriales() {
+        return inventario.listarMateriales();
     }
 
-    public String registrarCompraMaterialNuevo(
-            String nombre, String unidad, String cantidad) {
+    public synchronized String registrarCompra(String nombreMaterial, String cantidadTexto) {
+        int cantidad = validadorCantidad.convertir(cantidadTexto);
+        Material material = inventario.buscar(nombreMaterial);
+        if (material == null) {
+            throw new IllegalArgumentException("El material seleccionado no existe en el inventario.");
+        }
+        material.agregar(cantidad);
+        return "Compra registrada: " + material.getNombre()
+                + ", cantidad comprada " + cantidad + " " + material.getUnidad()
+                + ", stock actualizado " + material.getStock() + " " + material.getUnidad() + ".";
+    }
 
-        int cantidadComprada = Integer.parseInt(cantidad);
-
-        Material material = new Material(nombre, unidad, cantidadComprada);
-
+    public synchronized String registrarCompraMaterialNuevo(String nombre, String unidad, String cantidadTexto) {
+        int cantidad = validadorCantidad.convertir(cantidadTexto);
+        Material material = new Material(nombre, unidad, cantidad);
         inventario.agregar(material);
-
-        return "Compra registrada: " + nombre
-                + ", cantidad registrada " + cantidadComprada
-                + " " + unidad
-                + ", stock inicial " + material.getStock()
-                + " " + unidad + ".";
+        return "Compra registrada: " + material.getNombre()
+                + ", cantidad registrada " + cantidad + " " + material.getUnidad()
+                + ", stock inicial " + material.getStock() + " " + material.getUnidad() + ".";
     }
 }

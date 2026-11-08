@@ -5,42 +5,39 @@ import org.example.model.Material;
 import org.example.model.MovimientoSalida;
 import org.example.model.RegistroMovimientos;
 
+import java.util.List;
+import java.util.Objects;
+
 public class ControlConsumo {
     private static final String SIN_EXISTENCIAS = "No existen suficientes unidades disponibles.";
 
     private final Inventario inventario;
     private final RegistroMovimientos registroMovimientos;
+    private final ValidadorCantidad validadorCantidad = new ValidadorCantidad();
 
     public ControlConsumo(Inventario inventario, RegistroMovimientos registroMovimientos) {
-        this.inventario = inventario;
-        this.registroMovimientos = registroMovimientos;
+        this.inventario = Objects.requireNonNull(inventario, "El inventario es obligatorio");
+        this.registroMovimientos = Objects.requireNonNull(registroMovimientos, "El registro de movimientos es obligatorio");
     }
 
+    public List<Material> listarMateriales() {
+        return inventario.listarMateriales();
+    }
 
-    public String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
-        int cantidad;
-        try {
-            cantidad = Integer.parseInt(cantidadTexto.trim());
-        } catch (NumberFormatException | NullPointerException e) {
-            throw new IllegalArgumentException("Debe ingresar una cantidad válida.");
-        }
-        if (cantidad <= 0) {
-            throw new IllegalArgumentException("Debe ingresar una cantidad válida.");
-        }
+    public synchronized String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
+        int cantidad = validadorCantidad.convertir(cantidadTexto);
         Material material = inventario.buscar(nombreMaterial);
-        if (!material.puedeDescontar(cantidad)) {
+        if (material == null) {
+            throw new IllegalArgumentException("El material seleccionado no existe en el inventario.");
+        }
+        int stockRestante = material.getStock() - cantidad;
+        if (stockRestante < 0) {
             throw new IllegalArgumentException(SIN_EXISTENCIAS);
         }
         material.descontar(cantidad);
-        registroMovimientos.guardar(
-                new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
-        return construirConfirmacion(material, cantidad);
-    }
-
-
-    private String construirConfirmacion(Material material, int cantidad) {
+        registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
         return "Consumo registrado: " + material.getNombre()
                 + ", cantidad consumida " + cantidad + " " + material.getUnidad()
-                + ", stock restante " + material.getStock() + " " + material.getUnidad() + ".";
+                + ", stock restante " + stockRestante + " " + material.getUnidad() + ".";
     }
 }
