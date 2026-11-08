@@ -20,10 +20,14 @@ public class Material {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
         }
-        if (cantidad > stock) {
+        if (!puedeDescontar(cantidad)) {
             throw new IllegalStateException("El stock no puede quedar negativo.");
         }
         stock -= cantidad;
+    }
+
+    public synchronized boolean puedeDescontar(int cantidad) {
+        return stock - cantidad >= 0;
     }
 
     public int getStock() {
