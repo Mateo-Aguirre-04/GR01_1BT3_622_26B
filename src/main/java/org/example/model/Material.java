@@ -6,10 +6,19 @@ public class Material {
     private String unidad;
     private int stock;
 
-    public Material(String nombre, String unidad, int stock) {
-        this.nombre = nombre;
-        this.unidad = unidad;
-        this.stock = stock;
+    public Material(String nombre, String unidad, int stockInicial) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre del material es obligatorio.");
+        }
+        if (unidad == null || unidad.isBlank()) {
+            throw new IllegalArgumentException("La unidad de medida es obligatoria.");
+        }
+        if (stockInicial < 0) {
+            throw new IllegalArgumentException("El stock inicial no puede ser negativo.");
+        }
+        this.nombre = nombre.trim();
+        this.unidad = unidad.trim();
+        this.stock = stockInicial;
     }
 
     public void agregar(int cantidad) {
