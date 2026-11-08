@@ -21,6 +21,10 @@ public class InterfazIngresoDonacion {
         return controlIngresoDonacion.listarDonacionesPorIngresar();
     }
 
+    public String aprobarIngreso(Long idDonacion) {
+        return controlIngresoDonacion.aprobarIngreso(idDonacion);
+    }
+
     public String mensajeSinPendientes() {
         return SIN_PENDIENTES;
     }
