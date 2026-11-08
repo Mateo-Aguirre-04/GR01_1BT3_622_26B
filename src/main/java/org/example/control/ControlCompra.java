@@ -12,7 +12,28 @@ class ControlCompra {
     }
 
     public String registrarCompra(String nombre, String cantidad) {
-        int cantidadComprada = Integer.parseInt(cantidad);
+        if (cantidad == null || cantidad.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Debe ingresar una cantidad válida."
+            );
+        }
+
+        int cantidadComprada;
+
+        try {
+            cantidadComprada = Integer.parseInt(cantidad.trim());
+
+            if (cantidadComprada <= 0) {
+                throw new IllegalArgumentException(
+                        "Debe ingresar una cantidad válida."
+                );
+            }
+
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                    "Debe ingresar una cantidad válida."
+            );
+        }
 
         Material material = inventario.buscar(nombre);
         material.agregar(cantidadComprada);

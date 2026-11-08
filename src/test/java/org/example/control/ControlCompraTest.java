@@ -4,6 +4,9 @@ import org.example.model.Inventario;
 import org.example.model.Material;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,5 +48,18 @@ class ControlCompraTest {
                 "Compra registrada: Arena sanitaria, cantidad registrada 4 sacos, stock inicial 4 sacos.",
                 confirmacion
         );
+    }
+
+    @ParameterizedTest(name = "rechaza la cantidad: \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {"0", "-5", "abc"})
+    void registrarCompraConCantidadNoValidaLaRechazaSinCambiarElStock(String cantidad) {
+        IllegalArgumentException error = assertThrows(
+                IllegalArgumentException.class,
+                () -> control.registrarCompra("Croquetas", cantidad)
+        );
+
+        assertEquals("Debe ingresar una cantidad válida.", error.getMessage());
+        assertEquals(20, inventario.buscar("Croquetas").getStock());
     }
 }
