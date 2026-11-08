@@ -5,7 +5,14 @@ import org.example.model.Inventario;
 import org.example.model.Material;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.example.model.MovimientoSalida;
+import org.example.model.RegistroMovimientos;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -46,5 +53,20 @@ class ControlConsumoTest {
         assertTrue(inventario.existe("Croquetas"));
         assertEquals("Consumo registrado: Croquetas, cantidad consumida 20 kg, stock restante 0 kg.",
                 confirmacion);
+    }
+
+    @Test
+    void registrarConsumoMayorALasExistenciasLoRechazaSinGuardarMovimiento() {
+        Inventario inventario = new Inventario();
+        inventario.agregar(new Material("Croquetas", "kg", 20));
+        RegistroMovimientos registroMock = mock(RegistroMovimientos.class);
+        ControlConsumo controlConMock = new ControlConsumo(inventario, registroMock);
+
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> controlConMock.registrarConsumo("Croquetas", "25", "Alimentación diaria"));
+
+        assertEquals("No existen suficientes unidades disponibles.", error.getMessage());
+        assertEquals(20, inventario.buscar("Croquetas").getStock());
+        verify(registroMock, never()).guardar(any(MovimientoSalida.class));
     }
 }

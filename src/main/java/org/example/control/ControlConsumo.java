@@ -20,6 +20,10 @@ public class ControlConsumo {
         int stockRestante = material.getStock() - cantidad;
         material.descontar(cantidad);
         registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
+        return construirConfirmacion(material, cantidad, stockRestante);
+    }
+
+    private String construirConfirmacion(Material material, int cantidad, int stockRestante) {
         return "Consumo registrado: " + material.getNombre()
                 + ", cantidad consumida " + cantidad + " " + material.getUnidad()
                 + ", stock restante " + stockRestante + " " + material.getUnidad() + ".";
