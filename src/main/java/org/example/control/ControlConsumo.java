@@ -1,6 +1,8 @@
 package org.example.control;
 
 import org.example.model.Inventario;
+import org.example.model.Material;
+import org.example.model.MovimientoSalida;
 import org.example.model.RegistroMovimientos;
 
 public class ControlConsumo {
@@ -13,6 +15,13 @@ public class ControlConsumo {
     }
 
     public String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
-        return null;
+        int cantidad = Integer.parseInt(cantidadTexto.trim());
+        Material material = inventario.buscar(nombreMaterial);
+        int stockRestante = material.getStock() - cantidad;
+        material.descontar(cantidad);
+        registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
+        return "Consumo registrado: " + material.getNombre()
+                + ", cantidad consumida " + cantidad + " " + material.getUnidad()
+                + ", stock restante " + stockRestante + " " + material.getUnidad() + ".";
     }
 }

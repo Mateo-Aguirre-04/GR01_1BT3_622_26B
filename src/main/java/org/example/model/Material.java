@@ -16,6 +16,10 @@ public class Material {
         stock += cantidad;
     }
 
+    public synchronized void descontar(int cantidad) {
+        stock -= cantidad;
+    }
+
     public int getStock() {
         return stock;
     }
