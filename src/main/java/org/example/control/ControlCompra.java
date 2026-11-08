@@ -23,4 +23,20 @@ class ControlCompra {
                 + ", stock actualizado " + material.getStock()
                 + " " + material.getUnidad() + ".";
     }
+
+    public String registrarCompraMaterialNuevo(
+            String nombre, String unidad, String cantidad) {
+
+        int cantidadComprada = Integer.parseInt(cantidad);
+
+        Material material = new Material(nombre, unidad, cantidadComprada);
+
+        inventario.agregar(material);
+
+        return "Compra registrada: " + nombre
+                + ", cantidad registrada " + cantidadComprada
+                + " " + unidad
+                + ", stock inicial " + material.getStock()
+                + " " + unidad + ".";
+    }
 }
