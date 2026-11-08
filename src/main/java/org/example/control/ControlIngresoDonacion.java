@@ -30,7 +30,7 @@ public class ControlIngresoDonacion {
         StringBuilder confirmacion = new StringBuilder("Donación #" + donacion.getIdDonacion() + " ingresada al inventario.");
         for (ItemDonacion item : donacion.getItems()) {
             boolean materialNuevo = !inventario.existe(item.getMaterial());
-            Material material = ingresarAlInventario(item.getMaterial(), item.getUnidad(), item.getCantidad());
+            Material material = inventario.registrarIngreso(item.getMaterial(), item.getUnidad(), item.getCantidad());
             confirmacion.append(' ').append(describirIngreso(material, item.getCantidad(), materialNuevo));
         }
         return confirmacion.toString();
@@ -45,17 +45,6 @@ public class ControlIngresoDonacion {
             throw new IllegalArgumentException("No se encontró una donación con ese ID");
         }
         return donacion;
-    }
-
-    private Material ingresarAlInventario(String nombre, String unidad, int cantidad) {
-        Material material = inventario.buscar(nombre);
-        if (material == null) {
-            material = new Material(nombre, unidad, cantidad);
-            inventario.agregar(material);
-        } else {
-            material.agregar(cantidad);
-        }
-        return material;
     }
 
     private String describirIngreso(Material material, int cantidad, boolean materialNuevo) {
