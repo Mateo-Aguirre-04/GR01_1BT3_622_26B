@@ -6,6 +6,8 @@ import org.example.model.MovimientoSalida;
 import org.example.model.RegistroMovimientos;
 
 public class ControlConsumo {
+    private static final String SIN_EXISTENCIAS = "No existen suficientes unidades disponibles.";
+
     private final Inventario inventario;
     private final RegistroMovimientos registroMovimientos;
 
@@ -18,6 +20,9 @@ public class ControlConsumo {
         int cantidad = Integer.parseInt(cantidadTexto.trim());
         Material material = inventario.buscar(nombreMaterial);
         int stockRestante = material.getStock() - cantidad;
+        if (stockRestante < 0) {
+            throw new IllegalArgumentException(SIN_EXISTENCIAS);
+        }
         material.descontar(cantidad);
         registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
         return construirConfirmacion(material, cantidad, stockRestante);

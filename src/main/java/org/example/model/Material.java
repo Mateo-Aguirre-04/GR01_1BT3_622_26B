@@ -17,6 +17,12 @@ public class Material {
     }
 
     public synchronized void descontar(int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+        }
+        if (cantidad > stock) {
+            throw new IllegalStateException("El stock no puede quedar negativo.");
+        }
         stock -= cantidad;
     }
 
