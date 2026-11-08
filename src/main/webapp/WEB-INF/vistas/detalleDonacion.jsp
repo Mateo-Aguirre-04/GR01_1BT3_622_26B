@@ -54,21 +54,29 @@
                 Teléfono: <c:out value="${donacion.donante.telefono}"/> · Correo: <c:out value="${donacion.donante.correo}"/></p>
             <h3>Materiales y cantidades</h3>
             <table>
-                <thead><tr><th>Material</th><th>Cantidad</th></tr></thead>
+                <thead><tr><th>Material</th><th>Cantidad</th><th>Unidad</th></tr></thead>
                 <tbody>
                 <c:forEach var="item" items="${donacion.items}">
-                    <tr><td><c:out value="${item.material}"/></td><td><c:out value="${item.cantidad}"/></td></tr>
+                    <tr><td><c:out value="${item.material}"/></td><td><c:out value="${item.cantidad}"/></td><td><c:out value="${item.unidad}"/></td></tr>
                 </c:forEach>
                 </tbody>
             </table>
             <c:if test="${not empty donacion.descripcion}">
                 <p><strong>Descripción:</strong> <c:out value="${donacion.descripcion}"/></p>
             </c:if>
-            <p><strong>Estado:</strong> ${donacion.estado == 'PENDIENTE' ? 'Pendiente de recepción' : 'Recibida'}</p>
-            <form action="${pageContext.request.contextPath}/donaciones/gestionar" method="post" class="actions">
-                <input type="hidden" name="idDonacion" value="<c:out value='${donacion.idDonacion}'/>">
-                <button type="submit">Confirmar recepción</button>
-            </form>
+            <p><strong>Estado:</strong>
+                <c:choose>
+                    <c:when test="${donacion.estado == 'PENDIENTE'}">Pendiente de recepción</c:when>
+                    <c:when test="${donacion.estado == 'RECIBIDA'}">Recibida, pendiente de ingreso al inventario</c:when>
+                    <c:otherwise>Ingresada al inventario</c:otherwise>
+                </c:choose>
+            </p>
+            <c:if test="${donacion.estado == 'PENDIENTE'}">
+                <form action="${pageContext.request.contextPath}/donaciones/gestionar" method="post" class="actions">
+                    <input type="hidden" name="idDonacion" value="<c:out value='${donacion.idDonacion}'/>">
+                    <button type="submit">Confirmar recepción</button>
+                </form>
+            </c:if>
         </section>
         <div class="actions">
             <a class="link" href="${pageContext.request.contextPath}/donaciones/gestionar">Volver a la lista</a>

@@ -248,6 +248,24 @@
                 <p>Registra vacunas y controles médicos, y consulta la agenda de cada perro.</p>
                 <a class="module-link" href="${pageContext.request.contextPath}/agenda">Agenda médica</a>
             </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">📥</div>
+                <h3>Ingreso de donaciones</h3>
+                <p>Aprueba las donaciones recibidas y súmalas al inventario del refugio.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/inventario/donaciones">Ingreso de donaciones</a>
+            </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">🛒</div>
+                <h3>Registro de compra</h3>
+                <p>Registra los materiales comprados y actualiza su stock.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/inventario/compras">Registro de compra</a>
+            </article>
+            <article class="module-card">
+                <div class="module-icon" aria-hidden="true">📤</div>
+                <h3>Registro de consumo</h3>
+                <p>Descuenta del inventario los materiales utilizados y su motivo.</p>
+                <a class="module-link" href="${pageContext.request.contextPath}/inventario/consumos">Registro de consumo</a>
+            </article>
             </c:if>
             <c:if test="${empty sessionScope.vistaActual or sessionScope.vistaActual == 'adoptante'}">
             <article class="module-card">
