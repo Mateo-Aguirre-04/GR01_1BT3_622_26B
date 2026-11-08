@@ -52,6 +52,10 @@ public class Donacion {
     }
 
     public synchronized void marcarIngresada() {
+        if (estado != Estado.RECIBIDA) {
+            throw new IllegalStateException("La donación debe estar recibida para ingresar al inventario");
+        }
+        estado = Estado.INGRESADA;
     }
 
     private void validarPendiente() {

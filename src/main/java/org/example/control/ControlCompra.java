@@ -3,7 +3,7 @@ package org.example.control;
 import org.example.model.Inventario;
 import org.example.model.Material;
 
-class ControlCompra {
+public class ControlCompra {
 
     private Inventario inventario;
 

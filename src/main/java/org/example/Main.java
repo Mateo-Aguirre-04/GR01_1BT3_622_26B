@@ -11,7 +11,11 @@ import org.example.control.ControlModificacionPerro;
 import org.example.control.ControlRegistroDonacion;
 import org.example.control.ControlGestionDonacion;
 import org.example.control.ControlAgenda;
+import org.example.control.ControlCompra;
+import org.example.control.ControlConsumo;
+import org.example.control.ControlIngresoDonacion;
 import org.example.model.Encargado;
+import org.example.model.HistorialMovimientos;
 import org.example.model.Refugio;
 
 public class Main {
@@ -28,6 +32,9 @@ public class Main {
     private static ControlRegistroDonacion controlRegistroDonacion;
     private static ControlGestionDonacion controlGestionDonacion;
     private static ControlAgenda controlAgenda;
+    private static ControlCompra controlCompra;
+    private static ControlConsumo controlConsumo;
+    private static ControlIngresoDonacion controlIngresoDonacion;
 
     private Main() {
     }
@@ -47,6 +54,9 @@ public class Main {
             controlRegistroDonacion = new ControlRegistroDonacion(refugio);
             controlGestionDonacion = new ControlGestionDonacion(refugio);
             controlAgenda = new ControlAgenda(refugio);
+            controlCompra = new ControlCompra(refugio.getInventario());
+            controlConsumo = new ControlConsumo(refugio.getInventario(), new HistorialMovimientos());
+            controlIngresoDonacion = new ControlIngresoDonacion(refugio, refugio.getInventario());
         }
     }
 
@@ -113,6 +123,21 @@ public class Main {
     public static ControlAgenda getControlAgenda() {
         initialize();
         return controlAgenda;
+    }
+
+    public static ControlCompra getControlCompra() {
+        initialize();
+        return controlCompra;
+    }
+
+    public static ControlConsumo getControlConsumo() {
+        initialize();
+        return controlConsumo;
+    }
+
+    public static ControlIngresoDonacion getControlIngresoDonacion() {
+        initialize();
+        return controlIngresoDonacion;
     }
 
     public static void main(String[] args) {
