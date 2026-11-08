@@ -58,7 +58,7 @@
                 <thead><tr><th>Material</th><th>Cantidad</th></tr></thead>
                 <tbody>
                 <c:forEach var="item" items="${donacionRegistrada.items}">
-                    <tr><td><c:out value="${item.material}"/></td><td><c:out value="${item.cantidad}"/></td></tr>
+                    <tr><td><c:out value="${item.material}"/></td><td><c:out value="${item.cantidad}"/> <c:out value="${item.unidad}"/></td></tr>
                 </c:forEach>
                 </tbody>
             </table>

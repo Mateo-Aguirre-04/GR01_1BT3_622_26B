@@ -70,7 +70,10 @@
                 </div>
                 <div class="form-group material-nuevo">
                     <label for="unidadNueva">Unidad</label>
-                    <input id="unidadNueva" name="unidadNueva" placeholder="Ej.: kg, unidades, sacos" value="<c:out value='${param.unidadNueva}'/>">
+                    <select id="unidadNueva" name="unidadNueva">
+                        <option value="kg" ${param.unidadNueva == 'kg' ? 'selected' : ''}>Kg (alimento)</option>
+                        <option value="unidades" ${param.unidadNueva == 'unidades' ? 'selected' : ''}>Unidades</option>
+                    </select>
                 </div>
                 <div class="form-group wide">
                     <label for="cantidad">Cantidad</label>
