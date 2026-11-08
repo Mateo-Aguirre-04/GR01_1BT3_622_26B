@@ -29,6 +29,10 @@ public class Donacion {
         items.add(new ItemDonacion(material, cantidad));
     }
 
+    public synchronized void agregarMaterial(String material, int cantidad, String unidad) {
+        items.add(new ItemDonacion(material, cantidad));
+    }
+
     public synchronized int cantidadDeMateriales() {
         return items.size();
     }

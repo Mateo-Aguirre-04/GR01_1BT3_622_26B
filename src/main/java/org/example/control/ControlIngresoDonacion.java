@@ -21,4 +21,9 @@ public class ControlIngresoDonacion {
                 .filter(donacion -> donacion.getEstado() == Donacion.Estado.RECIBIDA)
                 .toList();
     }
+
+    public String aprobarIngreso(Long idDonacion) {
+        return null;
+    }
+
 }

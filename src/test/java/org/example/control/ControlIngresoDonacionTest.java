@@ -1,10 +1,6 @@
 package org.example.control;
 
-import org.example.model.Adoptante;
-import org.example.model.Donacion;
-import org.example.model.Inventario;
-import org.example.model.Refugio;
-import org.example.model.RepositorioDonaciones;
+import org.example.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,6 +46,44 @@ class ControlIngresoDonacionTest {
         refugio.agregarDonacion(ingresada);
 
         assertTrue(control.listarDonacionesPorIngresar().isEmpty());
+    }
+
+
+    @Test
+    void aprobarDonacionDeMaterialRegistradoSumaAlStockYLaMarcaIngresada() {
+        Inventario inventario = refugio.getInventario();
+        inventario.agregar(new Material("Croquetas", "kg", 20));
+        Donacion donacion = registrarDonacionRecibida("Croquetas", 10, "kg");
+
+        String confirmacion = control.aprobarIngreso(donacion.getIdDonacion());
+
+        assertEquals(30, inventario.buscar("Croquetas").getStock());
+        assertEquals(Donacion.Estado.INGRESADA, donacion.getEstado());
+        assertEquals("Donación #1 ingresada al inventario. "
+                + "Croquetas: cantidad ingresada 10 kg, stock actualizado 30 kg.", confirmacion);
+    }
+
+    @Test
+    void aprobarDonacionDeMaterialNuevoLoCreaConSuStockInicial() {
+        Inventario inventario = refugio.getInventario();
+        Donacion donacion = registrarDonacionRecibida("Arena sanitaria", 2, "sacos");
+
+        String confirmacion = control.aprobarIngreso(donacion.getIdDonacion());
+
+        assertTrue(inventario.existe("Arena sanitaria"));
+        Material arena = inventario.buscar("Arena sanitaria");
+        assertEquals(2, arena.getStock());
+        assertEquals("sacos", arena.getUnidad());
+        assertEquals("Donación #1 ingresada al inventario. "
+                + "Arena sanitaria: cantidad recibida 2 sacos, stock inicial registrado 2 sacos.", confirmacion);
+    }
+
+    private Donacion registrarDonacionRecibida(String material, int cantidad, String unidad) {
+        Donacion donacion = new Donacion(refugio.obtenerIdDonacion(), donante, "");
+        donacion.agregarMaterial(material, cantidad, unidad);
+        donacion.marcarRecibida();
+        refugio.agregarDonacion(donacion);
+        return donacion;
     }
 
     private Donacion nuevaDonacion(String material, int cantidad) {
