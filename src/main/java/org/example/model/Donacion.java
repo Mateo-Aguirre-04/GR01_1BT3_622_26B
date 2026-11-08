@@ -51,6 +51,9 @@ public class Donacion {
         estado = Estado.RECIBIDA;
     }
 
+    public synchronized void marcarIngresada() {
+    }
+
     private void validarPendiente() {
         if (estado != Estado.PENDIENTE) {
             throw new IllegalStateException("La donación ya fue recibida");
@@ -79,6 +82,7 @@ public class Donacion {
 
     public enum Estado {
         PENDIENTE,
-        RECIBIDA
+        RECIBIDA,
+        INGRESADA
     }
 }

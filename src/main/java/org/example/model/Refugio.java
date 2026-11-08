@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "refugios")
-public class Refugio {
+public class Refugio implements RepositorioDonaciones {
     @Id
     private Long idRefugio;
     private String nombre;
@@ -24,6 +24,7 @@ public class Refugio {
     private final List<SolicitudAdopcion> solicitudes = new ArrayList<>();
     private final List<Visita> visitas = new ArrayList<>();
     private final List<Donacion> donaciones = new ArrayList<>();
+    private final Inventario inventario = new Inventario();
     private long siguienteIdSolicitud = 1L;
     private long siguienteIdVisita = 1L;
     private long siguienteIdDonacion = 1L;
@@ -63,6 +64,10 @@ public class Refugio {
 
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public Inventario getInventario() {
+        return inventario;
     }
 
     public List<Perro> getPerros() {
@@ -207,6 +212,7 @@ public class Refugio {
         siguienteIdDonacion = Math.max(siguienteIdDonacion, donacion.getIdDonacion() + 1);
     }
 
+    @Override
     public synchronized Donacion obtenerDonacion(Long idDonacion) {
         if (idDonacion == null) {
             return null;
@@ -217,6 +223,7 @@ public class Refugio {
                 .orElse(null);
     }
 
+    @Override
     public synchronized List<Donacion> listarDonaciones() {
         return List.copyOf(donaciones);
     }
