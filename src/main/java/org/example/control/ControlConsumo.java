@@ -24,6 +24,7 @@ public class ControlConsumo {
         return inventario.listarMateriales();
     }
 
+
     public synchronized String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
         int cantidad = validadorCantidad.convertir(cantidadTexto);
         Material material = inventario.buscar(nombreMaterial);
