@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.example.model.MovimientoSalida;
 import org.example.model.RegistroMovimientos;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,4 +72,17 @@ class ControlConsumoTest {
         assertEquals(20, inventario.buscar("Croquetas").getStock());
         verify(registroMock, never()).guardar(any(MovimientoSalida.class));
     }
+
+    @ParameterizedTest(name = "rechaza la cantidad: \"{0}\"")
+    @NullAndEmptySource
+    @ValueSource(strings = {"0", "-3", "abc"})
+    void registrarConsumoConCantidadNoValidaLoRechazaSinGuardarMovimiento(String cantidad) {
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> control.registrarConsumo("Croquetas", cantidad, "Alimentación diaria"));
+        assertEquals("Debe ingresar una cantidad válida.", error.getMessage());
+        assertEquals(20, inventario.buscar("Croquetas").getStock());
+        assertTrue(historial.listar().isEmpty());
+    }
+
+
 }
