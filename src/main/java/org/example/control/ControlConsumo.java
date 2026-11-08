@@ -16,16 +16,27 @@ public class ControlConsumo {
         this.registroMovimientos = registroMovimientos;
     }
 
+
     public String registrarConsumo(String nombreMaterial, String cantidadTexto, String motivo) {
-        int cantidad = Integer.parseInt(cantidadTexto.trim());
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(cantidadTexto.trim());
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new IllegalArgumentException("Debe ingresar una cantidad válida.");
+        }
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("Debe ingresar una cantidad válida.");
+        }
         Material material = inventario.buscar(nombreMaterial);
         if (!material.puedeDescontar(cantidad)) {
             throw new IllegalArgumentException(SIN_EXISTENCIAS);
         }
         material.descontar(cantidad);
-        registroMovimientos.guardar(new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
+        registroMovimientos.guardar(
+                new MovimientoSalida(material.getNombre(), cantidad, material.getUnidad(), motivo));
         return construirConfirmacion(material, cantidad);
     }
+
 
     private String construirConfirmacion(Material material, int cantidad) {
         return "Consumo registrado: " + material.getNombre()
