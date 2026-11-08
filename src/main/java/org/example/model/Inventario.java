@@ -24,6 +24,17 @@ public class Inventario {
         return materiales.get(clave(nombre));
     }
 
+    public synchronized Material registrarIngreso(String nombre, String unidad, int cantidad) {
+        Material material = buscar(nombre);
+        if (material == null) {
+            material = new Material(nombre, unidad, cantidad);
+            agregar(material);
+        } else {
+            material.agregar(cantidad);
+        }
+        return material;
+    }
+
     public synchronized boolean existe(String nombre) {
         return buscar(nombre) != null;
     }
